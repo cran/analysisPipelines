@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Naren Srinivasan, Sanjay" />
+
+<meta name="date" content="2018-11-13" />
+
+<title>Analysis pipelines - Core functionality and working with R data frames and functions</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Analysis pipelines - Core functionality and working with R data frames and functions</h1>
+<h4 class="author"><em>Naren Srinivasan, Sanjay</em></h4>
+<h4 class="date"><em>11/13/2018</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#an-overview-of-the-package">An overview of the package</a><ul>
+<li><a href="#types-of-pipelines">Types of pipelines</a></li>
+<li><a href="#classes-and-implementation">Classes and implementation</a></li>
+<li><a href="#pipelining-semantics">Pipelining semantics</a></li>
+<li><a href="#supported-engines">Supported engines</a></li>
+<li><a href="#available-vignettes">Available vignettes</a></li>
+</ul></li>
+<li><a href="#usage">Usage</a><ul>
+<li><a href="#loading-the-package">Loading the package</a></li>
+<li><a href="#creating-an-analysispipeline-object">Creating an analysisPipeline object</a></li>
+<li><a href="#creating-a-simple-pipeline">Creating a simple pipeline</a></li>
+<li><a href="#lazy-evaluation">Lazy evaluation</a></li>
+</ul></li>
+<li><a href="#user-defined-functions">User-defined functions</a><ul>
+<li><a href="#registering-your-own-function">Registering your own function</a></li>
+<li><a href="#adding-the-newly-registered-function-to-a-pipeline">Adding the newly registered function to a pipeline</a></li>
+</ul></li>
+<li><a href="#complex-pipelines-and-formula-semantics">Complex pipelines and formula semantics</a><ul>
+<li><a href="#using-formulae-in-pipelines">Using formulae in pipelines</a></li>
+<li><a href="#differences-between-outasin-and-formulae---when-to-use-what">Differences between <code>outAsIn</code> and formulae - When to use what</a></li>
+</ul></li>
+<li><a href="#visualizing-pipelines">Visualizing pipelines</a></li>
+<li><a href="#generating-reports">Generating reports</a></li>
+<li><a href="#saving-and-loading-pipelines">Saving and loading pipelines</a></li>
+<li><a href="#details-of-execution">Details of execution</a><ul>
+<li><a href="#execution-mechanism">Execution mechanism</a><ul>
+<li><a href="#topological-sort-and-ordering">Topological sort and ordering</a></li>
+<li><a href="#memory-management-garbage-cleaning">Memory management &amp; garbage cleaning</a></li>
+<li><a href="#type-conversions">Type conversions</a></li>
+</ul></li>
+<li><a href="#logging-execution-times">Logging &amp; Execution times</a></li>
+<li><a href="#custom-exception-handling">Custom exception-handling</a></li>
+</ul></li>
+<li><a href="#saving-and-loading-registries">Saving and loading registries</a></li>
+</ul>
+</div>
+
+<div id="an-overview-of-the-package" class="section level1">
+<h1>An overview of the package</h1>
+<p>In a typical data science workflow there are multiple steps involved; from data aggregation, cleaning, exploratory analysis, modeling and so on. As the data science community matures, we are seeing that there are a variety of languages which provide better capabilities for specific steps in the data science workflow. <em>R</em> is typically used for data transformations, statistical models, and visualizations, while <em>Python</em> provides more robust functions for machine learning. In addition to this, <em>Spark</em> provides an environment to process high volume data - both as one-time/ batches or as streams.</p>
+<p>The job of today’s data scientist is changing from one where they are married to a specific tool or language, to one where they are using all these tools for their specialized purposes. The key problem then becomes one of translation between these tools for seamless analysis. Additionally, in the work of a data scientist, there is a need to perform the same task repeatedly, as well as put certain analysis flows (or) pipelines into production to work on new data periodically, or work on streaming data.</p>
+<p>Recently, interfaces for using these various tools have been published. In terms of R packages, the <em>reticulate</em> package provides an interface to Python, and the <em>SparkR</em> and <em>sparklyr</em> packages provide an interface to Spark.</p>
+<p>The <em>analysisPipelines</em> package uses these interfaces to enable <em>Interoperable Pipelines</em> i.e. the ability compose and execute a reusable data science pipeline which can contain functions to be executed in an <em>R</em> environment, in a <em>Python</em> environment or in a <em>Spark</em> environment. These pipelines can be saved and loaded, to enable batch operation as datasets get updated with new data.</p>
+<p>The goal of the <em>analysisPipelines</em> package is to make the job of the data scientist easier and help them compose pipelines of analysis which consist of data manipulation, exploratory analysis &amp; reporting, as well as modeling steps. The idea is for data scientists to use tools of their choice through an <em>R</em> interface, using this package Essentially, it allows data scientists to:</p>
+<ul>
+<li>Compose <strong>reusable, interoperable</strong> pipelines in a flexible manner</li>
+<li>Leverage available utility functions for performing different analytical operations</li>
+<li>Put these pipelines into production in order to execute repeatedly</li>
+<li>Generated analysis reports by executing these pipelines</li>
+</ul>
+<div id="types-of-pipelines" class="section level2">
+<h2>Types of pipelines</h2>
+<p>This package supports for both <em>batch/ repeated</em> pipelines, as well as <em>streaming pipelines.</em></p>
+<p>For <em>batch</em> pipelines, the vision is to enable interoperable pipelines which execute efficiently with functions in <em>R</em>, <em>Spark</em> and <em>Python</em></p>
+<p>For <em>streaming</em> pipelines, the package allows for streaming analyses through <em>Apache Spark Structured Streaming.</em></p>
+</div>
+<div id="classes-and-implementation" class="section level2">
+<h2>Classes and implementation</h2>
+<p>The <em>analysisPipelines</em> package uses S4 classes and methods to implement all the core functionality. The fundamental class exposed in this package is the <em>BaseAnalysisPipeline</em> class on which most of the core functions are implemented. The user, however, interacts with the <em>AnalysisPipeline</em> and <em>StreamingAnalysisPipeline</em> classes for batch and streaming analysis respectively. In this vignette, we work with the <em>AnalysisPipeline</em> class, with functions solely in R.</p>
+</div>
+<div id="pipelining-semantics" class="section level2">
+<h2>Pipelining semantics</h2>
+<p>The package stays true to the <em>tidyverse</em> pipelining style which also fits nicely into the idea of creating pipelines. The core mechanism in the package is too instantiate a pipeline with data and then pipeline required functions to the object itself.</p>
+<p>The package allows both the use of <em>magrittr</em> pipe <strong>(%&gt;%)</strong> or the <em>pipeR</em> pipe <strong>(%&gt;&gt;%)</strong>.</p>
+</div>
+<div id="supported-engines" class="section level2">
+<h2>Supported engines</h2>
+<p>As of this version, the package supports functions executed on <em>R</em>, or <em>Spark</em> through the SparkR interface for batch pipelines. It also supports <em>Spark Structured Streaming</em> pipelines for streaming analyses. In subsequent releases, <em>Python</em> will also be supported</p>
+</div>
+<div id="available-vignettes" class="section level2">
+<h2>Available vignettes</h2>
+<p>This package contains 5 vignettes:</p>
+<ul>
+<li>This is the main vignette describing the package’s core functionality, and explaining this through <strong>batch</strong> pipelines in just <strong>R</strong></li>
+<li><strong>Analysis pipelines for working with Spark DataFrames for one-time/ batch analyses</strong> - This vignette describes creating <strong>batch</strong> pipelines to execute solely in a <em>Spark</em> environment</li>
+<li><strong>Analysis pipelines for working with Python functions</strong> - This vignette describes creating <strong>batch</strong> pipelines to execute solely in a <em>Python</em> environment</li>
+<li><strong>Interoperable analysis pipelines</strong> - This vignette describes creating and executing <strong>batch</strong> pipelines which are composed of functions executing across <em>supported engines</em></li>
+<li><strong>Streaming Analysis Pipelines for working with Apache Spark Structured Streaming</strong> - This vignette describes setting up streaming pipelines on <em>Apache Spark Structured Streaming</em></li>
+<li><strong>Using pipelines inside Shiny widgets or apps</strong> - A brief vignette which illustrates an example of using a pipeline inside a shiny widget with reactive elements and changing data</li>
+<li><strong>An introduction to meta-pipelines</strong> - This vignette illustrates the use of meta-pipelines</li>
+</ul>
+</div>
+</div>
+<div id="usage" class="section level1">
+<h1>Usage</h1>
+<div id="loading-the-package" class="section level2">
+<h2>Loading the package</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(analysisPipelines)</code></pre></div>
+</div>
+<div id="creating-an-analysispipeline-object" class="section level2">
+<h2>Creating an analysisPipeline object</h2>
+<p>An object of class <em>AnalysisPipeline</em> can be created like so:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj &lt;-<span class="st"> </span><span class="kw">AnalysisPipeline</span>(<span class="dt">input =</span> iris)
+
+<span class="kw">class</span>(obj)</code></pre></div>
+<pre><code>## [1] &quot;AnalysisPipeline&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;analysisPipelines&quot;</code></pre>
+<p>While initializing the object, an input dataframe can be provided on which the pipeline should work, either by providing the filePath to a <em>.csv</em> file through the <em>filePath</em> argument, or by providing R dataframe available in the session, through the <em>input</em> argument</p>
+<p>The <em>AnalysisPipeline</em> object has a set of getters, for retrieving various slots containing data and metadata required for pipeline execution. The most basic of them is the <em>getInput</em> method which retrieves the input dataframe with which the object has been initialized. If not initialized with a dataframe, the <em>setInput</em> method can be used to do so.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj <span class="op">%&gt;&gt;%</span><span class="st"> </span>getInput <span class="op">%&gt;&gt;%</span><span class="st"> </span>str</code></pre></div>
+<pre><code>## 'data.frame':    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getRegistry</span>()</code></pre></div>
+<pre><code>## # A tibble: 8 x 7
+##   functionName heading engine exceptionHandli… userDefined isDataFunction
+##   &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;lgl&gt;       &lt;lgl&gt;         
+## 1 univarCatDi… Univar… r      genericPipeline… FALSE       TRUE          
+## 2 outlierPlot  Univar… r      genericPipeline… FALSE       TRUE          
+## 3 multiVarOut… Multiv… r      genericPipeline… FALSE       TRUE          
+## 4 ignoreCols   Ignore… r      genericPipeline… FALSE       TRUE          
+## 5 getFeatures… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+## 6 getTargetFo… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+## 7 castKafkaSt… Cast K… spark… genericPipeline… FALSE       TRUE          
+## 8 convertKafk… Conver… spark… genericPipeline… FALSE       TRUE          
+## # ... with 1 more variable: firstArgClass &lt;chr&gt;</code></pre>
+<p>The <em>getRegistry</em> function retrieves the set of functions and their metadata available for pipelining. Any <em>AnalysisPipeline</em> object comes with a set of pre-registered functions which can be used <strong>out-of-the-box</strong>. Of course, the user can register her own functions, to be used in the pipeline. We will look at this later on in the vignette.</p>
+<p>There are two types of functions which can be pipelined:</p>
+<ul>
+<li><strong>Data functions</strong> - These functions necessarily take their <strong>first</strong> argument as a dataframe. These are functions focused on performing operations on data. Specifically, the nomenclature <em>data functions</em> is used for those functions which work on the input dataframe set to the pipeline object, and perform some transformation or analysis on them. They help form the main <em>path</em> in a pipeline, constituting a linear flow from the input.</li>
+<li><strong>Non-data functions</strong> - These are auxiliary helper functions which are required in a pipeline, which may or may not operate on data. However, the <em>key</em> difference is that these functions do not operate on the <strong>input (or some direct transformation of it)</strong>. In essence, they help form auxiliary paths in the pipeline, which eventually merge into the main path.</li>
+</ul>
+<p>Both pre-registered and user-defined functions work with the <em>AnalysisPipeline</em> object in the same way i.e. regardless of who writes the function, they follow the same semantics.</p>
+</div>
+<div id="creating-a-simple-pipeline" class="section level2">
+<h2>Creating a simple pipeline</h2>
+<p>We’ll now take a look at creating a simple pipeline, with some of the pre-registered functions available in the registry. We pipeline the <em>univarCatDistPlots</em> function (available as a pre-registered utility function,which generates a chart showing distribution of a categorical variable in a dataset), by simply using the <em>pipe</em> or <em>double pipe</em> operator, and providing the required additional parameters apart from the <em>data</em> on which it needs to operate, as we have already initialized the <em>AnalysisPipeline</em> object with the data.</p>
+<p>Note that unless assigned to the same or another object, the pipeline does not get stored.</p>
+<p>We can access the details of the pipeline as a tibble through the <code>getPipeline</code> method.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Running univariate categorical distribution plot on the constructed object</span>
+<span class="co"># ?analysisPipelines::univarCatDistPlots</span>
+obj1 &lt;-<span class="st"> </span>obj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">univarCatDistPlots</span>(<span class="dt">uniCol =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">optionalPlots =</span> <span class="dv">0</span>, <span class="dt">storeOutput =</span> T)
+obj1 <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline</code></pre></div>
+<pre><code>## # A tibble: 1 x 6
+##   id    operation      heading              parameters outAsIn storeOutput
+##   &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;                &lt;list&gt;     &lt;lgl&gt;   &lt;lgl&gt;      
+## 1 1     univarCatDist… Univariate Distribu… &lt;list [4]&gt; FALSE   TRUE</code></pre>
+<p>We now construct a pipeline with a couple of functions, one to generate a categorical distribution plot, and another one for outliers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Running univariate categorical distribution plot and then </span>
+<span class="co"># outlier detection on the constructed object</span>
+
+obj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">univarCatDistPlots</span>(<span class="dt">uniCol =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">priColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">optionalPlots =</span> <span class="dv">0</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
+<span class="st">         </span><span class="kw">outlierPlot</span>(<span class="dt">method =</span> <span class="st">&quot;iqr&quot;</span>, <span class="dt">columnName =</span> <span class="st">&quot;Sepal.Length&quot;</span>, 
+              <span class="dt">cutoffValue =</span> <span class="fl">0.01</span>, <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">optionalPlots =</span> <span class="dv">0</span>, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>obj2
+obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline</code></pre></div>
+<pre><code>## # A tibble: 2 x 6
+##   id    operation      heading              parameters outAsIn storeOutput
+##   &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;                &lt;list&gt;     &lt;lgl&gt;   &lt;lgl&gt;      
+## 1 1     univarCatDist… Univariate Distribu… &lt;list [4]&gt; FALSE   FALSE      
+## 2 2     outlierPlot    Univariate Outlier   &lt;list [6]&gt; FALSE   TRUE</code></pre>
+<p>Apart from the parameters required for the function, a couple of additional parameters can be passed to registered functions when adding them to the pipeline:</p>
+<ul>
+<li><strong>outAsIn</strong> - This parameter defines if the original dataframe with which the object was initialized should be taken as input to this function (for data functions), or the output of the previous function in the pipeline should be used. By default, this is FALSE</li>
+<li><strong>storeOutput</strong> - Whether the output of this step in the pipeline should be stored. By default, this is FALSE.</li>
+</ul>
+</div>
+<div id="lazy-evaluation" class="section level2">
+<h2>Lazy evaluation</h2>
+<p>It is important to note that the functions in the pipeline are not actually <strong>called</strong> when the pipeline is defined. This can be seen by looking at the <em>output</em> slot of the pipeline we defined above.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(obj1<span class="op">@</span>output)</code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>The pipeline can be executed by explicitly calling the <code>generateOutput</code> method and assigning it to a variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj1Output &lt;-<span class="st"> </span>obj1 <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:28] ||  Engine Assessment for pipeline STARTED  ||
+## INFO [2019-01-03 13:12:29] ||  Engine Assessment COMPLETE. Time taken : 1.28892827033997 seconds||
+## INFO [2019-01-03 13:12:29] ||  Pipeline Prep. STARTED  ||
+## INFO [2019-01-03 13:12:29] ||  Pipeline Prep. COMPLETE. Time taken : 0.0369842052459717 seconds||
+## INFO [2019-01-03 13:12:29] ||  Pipeline Execution STARTED  ||
+## INFO [2019-01-03 13:12:29] ||  Executing Batch Number : 1/1 containing functions 'univarCatDistPlots' ||
+## INFO [2019-01-03 13:12:29] ||  Function ID '1' named 'univarCatDistPlots' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:29] ||  Function ID '1' named 'univarCatDistPlots' COMPLETED. Time taken : 0.141370058059692 seconds  ||
+## INFO [2019-01-03 13:12:29] ||  Batch Number 1/1 COMPLETE. Time taken : 0.15303111076355 seconds  ||
+## INFO [2019-01-03 13:12:29] ||  Performing final garbage cleaning and collection of outputs  ||
+## INFO [2019-01-03 13:12:29] ||  Pipeline Execution COMPLETE. Time taken : 0.171310663223267 seconds||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(obj1Output<span class="op">@</span>output)</code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Observe that the length of the output list of the first object (the chunk above) remains 0 since the generated output was assigned to a new object.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(obj1<span class="op">@</span>output)</code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>A specific output can be viewed by providing the ID of the function in the pipeline to the <code>getOutputById</code> method. The ID can be obtained from the <em>id</em> column in the <em>pipeline</em> tibble. corresponding to the function whose output is desired.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The index can range from 1 to length(obj@output)</span>
+obj1Output <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="st">&quot;1&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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Ue+OAGVmZl6+fPmzzz6bM2fOqlWrKioqSktLFyxYMG3atOXLl2s0mpUrVwoh/vSnP+l0ugULFly+fHnVqlWzZs1atWqV2WzetGnTPQcpKChITU2dP3/+mjVr/Pz89uzZY99ieXl52q8uXLjgsk8OAADqSr0LQNXV1Uaj8erVq82bN9+yZYunp+ehQ4ciIiJatmyp0WhGjBhx8uRJx/6HDh2Kj49v2rSpRqMZOnTowYMH7zlIQEDAsmXLQkJCzGazTqcrLy+3j2AwGD741bFjx+r6AwMAgDpX706BxcfHFxQUzJ49u0GDBoMHD05MTCwqKjp16tSUKVOkDj4+Po79S0tLg4ODpeVGjRoVFxffcxCNRrNz587s7GyNRqNSqexvEUKEhobm5ORIy1lZWXXxIQEAgEvVuwB069atvn37Dhky5MSJEwsXLmzXrl1AQED37t0nTpwohLBYLEVFRY79AwMDCwsLpeWioiLplz13D3L58uXc3NzZs2cHBgampaUZjca6/2gAAKCeqHenwPbs2TN//nybzdamTRsPDw+j0dipU6cDBw5cu3bNarV+8cUXX375pdTTarXabLbOnTtnZGRcv369urr6q6++6tq16z0HKSkpCQkJkdJSRkZGZWWlSz8lAABwpXp3BCgxMfHEiRPJyclarbZnz54dOnRQqVQTJkx47733jEZjWFjY5MmThRBqtToyMvL1119fsmTJmDFjZs2aVVVV1aFDhxEjRtxzkFatWh04cGDcuHEhISGDBg3avHlzfn5+mzZtXP1xAQCAC6hsNpura6hHsrKyYmNj5RjZYDAkJXlptfUucT6Y1WpVq9UqlcrVhdSM2WxWq9UajcbVhdSMxWKRfqPm6kJqpqqqSqvVqtX17nDyg1ksFrfbH202m3QZh9t9Sdxxtqurqy0WC7NdN6xW69q1pUFBQXIMfr9/2d3sbxYAAMBvRwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKo3V1AQqycWO5n5+fq6uoGZOpSqvV6nQ6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" /><!-- --></p>
+</div>
+</div>
+<div id="user-defined-functions" class="section level1">
+<h1>User-defined functions</h1>
+<div id="registering-your-own-function" class="section level2">
+<h2>Registering your own function</h2>
+<p>You can register your own <em>data</em> or <em>non-data</em> functions by calling <code>registerFunction.</code> This adds the user-defined function to the registry. The registry is maintained by the package and once registered, functions can be used across pipeline objects. The registry can be view by calling the <code>getRegistry</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Currently registered functions</span>
+<span class="kw">getRegistry</span>()</code></pre></div>
+<pre><code>## # A tibble: 8 x 7
+##   functionName heading engine exceptionHandli… userDefined isDataFunction
+##   &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;lgl&gt;       &lt;lgl&gt;         
+## 1 univarCatDi… Univar… r      genericPipeline… FALSE       TRUE          
+## 2 outlierPlot  Univar… r      genericPipeline… FALSE       TRUE          
+## 3 multiVarOut… Multiv… r      genericPipeline… FALSE       TRUE          
+## 4 ignoreCols   Ignore… r      genericPipeline… FALSE       TRUE          
+## 5 getFeatures… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+## 6 getTargetFo… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+## 7 castKafkaSt… Cast K… spark… genericPipeline… FALSE       TRUE          
+## 8 convertKafk… Conver… spark… genericPipeline… FALSE       TRUE          
+## # ... with 1 more variable: firstArgClass &lt;chr&gt;</code></pre>
+<p>In order to register a function, first the function must be defined in the Global environment, before calling <code>registerFunction</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bivariatePlots &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>, 
+                       <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor=</span><span class="st">'black'</span>) {
+  x=dataset[, select_var_name_<span class="dv">1</span>]
+  y=dataset[, select_var_name_<span class="dv">2</span>]
+  bivarPlot &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(x,y)) <span class="op">+</span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color=</span>priColor,<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> lm,<span class="dt">color=</span>secColor) <span class="op">+</span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(select_var_name_<span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">'Bivariate plot for'</span>, select_var_name_<span class="dv">1</span>, 
+                           <span class="st">'and'</span>, select_var_name_<span class="dv">2</span>, <span class="dt">sep=</span><span class="st">' '</span>)) <span class="op">+</span>
+<span class="st">    </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>), 
+                   <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),
+                   <span class="dt">axis.title=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>))
+  <span class="kw">return</span>(bivarPlot)
+}
+
+<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;bivariatePlots&quot;</span>, <span class="dt">heading =</span> <span class="st">&quot;Bivariate Analysis&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:30] ||  Function 'bivariatePlots' was registered successfully  ||</code></pre>
+</div>
+<div id="adding-the-newly-registered-function-to-a-pipeline" class="section level2">
+<h2>Adding the newly registered function to a pipeline</h2>
+<p>Now the newly registered user-defined function can be used as part of the pipeline, exactly as described before. For example, we add it to a pipeline which already contains some functions. The function then gets added to the end of the pipeline</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Chaining the user-defined function to the object's pipeline where it was registered</span>
+obj2 &lt;-<span class="st"> </span>obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">bivariatePlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">'Sepal.Length'</span>, <span class="dt">select_var_name_2 =</span> <span class="st">'Sepal.Width'</span>, 
+                 <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;black&quot;</span>)
+
+<span class="co"># Printing the updated pipeline</span>
+obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline </code></pre></div>
+<pre><code>## # A tibble: 3 x 6
+##   id    operation      heading              parameters outAsIn storeOutput
+##   &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;                &lt;list&gt;     &lt;lgl&gt;   &lt;lgl&gt;      
+## 1 1     univarCatDist… Univariate Distribu… &lt;list [4]&gt; FALSE   FALSE      
+## 2 2     outlierPlot    Univariate Outlier   &lt;list [6]&gt; FALSE   TRUE       
+## 3 3     bivariatePlots Bivariate Analysis   &lt;list [5]&gt; FALSE   FALSE</code></pre>
+<p>The newly added function will also lazy evaluate depending on the trigger.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj2Output &lt;-<span class="st"> </span>obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">generateOutput</span>()</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:30] ||  Engine Assessment for pipeline STARTED  ||
+## INFO [2019-01-03 13:12:30] ||  Engine Assessment COMPLETE. Time taken : 0.0128231048583984 seconds||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Prep. STARTED  ||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Prep. COMPLETE. Time taken : 0.0187497138977051 seconds||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Execution STARTED  ||
+## INFO [2019-01-03 13:12:30] ||  Executing Batch Number : 1/1 containing functions 'univarCatDistPlots, outlierPlot, bivariatePlots' ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '1' named 'univarCatDistPlots' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '1' named 'univarCatDistPlots' COMPLETED. Time taken : 0.0697989463806152 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '2' named 'outlierPlot' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '2' named 'outlierPlot' COMPLETED. Time taken : 0.0136368274688721 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '3' named 'bivariatePlots' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '3' named 'bivariatePlots' COMPLETED. Time taken : 0.0213360786437988 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Batch Number 1/1 COMPLETE. Time taken : 0.122961521148682 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Performing final garbage cleaning and collection of outputs  ||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Execution COMPLETE. Time taken : 0.137528419494629 seconds||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj2Output <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="st">&quot;1&quot;</span>)</code></pre></div>
+<pre><code>## $call
+## # A tibble: 1 x 7
+##   id    operation   heading    parameters outAsIn storeOutput dependencies
+##   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;list&gt;     &lt;lgl&gt;   &lt;lgl&gt;       &lt;list&gt;      
+## 1 1     univarCatD… Univariat… &lt;list [4]&gt; FALSE   FALSE       &lt;chr [0]&gt;   
+## 
+## $output
+## [1] &quot;The output of this function was not configured to be stored&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj2Output <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getPipeline</span>()</code></pre></div>
+<pre><code>## # A tibble: 3 x 7
+##   id    operation   heading    parameters outAsIn storeOutput dependencies
+##   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;list&gt;     &lt;lgl&gt;   &lt;lgl&gt;       &lt;list&gt;      
+## 1 1     univarCatD… Univariat… &lt;list [4]&gt; FALSE   FALSE       &lt;chr [0]&gt;   
+## 2 2     outlierPlot Univariat… &lt;list [6]&gt; FALSE   TRUE        &lt;chr [0]&gt;   
+## 3 3     bivariateP… Bivariate… &lt;list [5]&gt; FALSE   FALSE       &lt;chr [0]&gt;</code></pre>
+</div>
+</div>
+<div id="complex-pipelines-and-formula-semantics" class="section level1">
+<h1>Complex pipelines and formula semantics</h1>
+<p>In addition to the simple pipelines described above, more complex pipelines can also be defined. There are cases when the outputs of previous functions in the pipeline, as inputs to arbitrary parameters of subsequent functions. This is <em>apart</em> from the <strong>data</strong> which is passed through in a more <em>native</em> manner through the <em>outAsIn</em> argument to subsequent functions in the pipeline.</p>
+<div id="using-formulae-in-pipelines" class="section level2">
+<h2>Using formulae in pipelines</h2>
+<p>The package defines certain <em>formula</em> semantics to accomplish this. We take the example of two simple user-defined functions, both which simply return the color of the graph, as well as the column on which the graph should be plotted, in order to illustrate how this works.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">getColor &lt;-<span class="st"> </span><span class="cf">function</span>(color){
+  <span class="kw">return</span>(color)
+}
+
+getColumnName &lt;-<span class="cf">function</span>(columnName){
+  <span class="kw">return</span>(columnName)
+}
+
+<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getColor&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;character&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:30] ||  Function 'getColor' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getColumnName&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;character&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:30] ||  Function 'getColumnName' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getRegistry</span>()</code></pre></div>
+<pre><code>## # A tibble: 11 x 7
+##    functionName heading engine exceptionHandli… userDefined isDataFunction
+##    &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;lgl&gt;       &lt;lgl&gt;         
+##  1 univarCatDi… Univar… r      genericPipeline… FALSE       TRUE          
+##  2 outlierPlot  Univar… r      genericPipeline… FALSE       TRUE          
+##  3 multiVarOut… Multiv… r      genericPipeline… FALSE       TRUE          
+##  4 ignoreCols   Ignore… r      genericPipeline… FALSE       TRUE          
+##  5 getFeatures… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+##  6 getTargetFo… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+##  7 castKafkaSt… Cast K… spark… genericPipeline… FALSE       TRUE          
+##  8 convertKafk… Conver… spark… genericPipeline… FALSE       TRUE          
+##  9 bivariatePl… Bivari… r      genericPipeline… TRUE        TRUE          
+## 10 getColor     &quot;&quot;      r      genericPipeline… TRUE        FALSE         
+## 11 getColumnNa… &quot;&quot;      r      genericPipeline… TRUE        FALSE         
+## # ... with 1 more variable: firstArgClass &lt;chr&gt;</code></pre>
+<p>In the following pipeline, we pass the colour and column name we want to the <em>non-data</em> functions we defined, and use the output of those in subsequent functions. This can be done simply by specifying a <strong>formula</strong> of the form ‘f<em>id</em>’ against the argument to which we want to pass the output. The ID represents the ID of the function in the pipeline. For example, to pass the output of function with ID ‘1’ as an argument to a parameter of a subsequent function, the formula ‘~f1’ is passed to that corresponding argument.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getColor</span>(<span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getColumnName</span>(<span class="dt">columnName =</span> <span class="st">&quot;Petal.Length&quot;</span>) <span class="op">%&gt;&gt;%</span>
+<span class="st">      </span><span class="kw">univarCatDistPlots</span>(<span class="dt">uniCol =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">priColor =</span> <span class="op">~</span>f1, <span class="dt">optionalPlots =</span> <span class="dv">0</span>, <span class="dt">storeOutput =</span> T) <span class="op">%&gt;&gt;%</span>
+<span class="st">      </span><span class="kw">outlierPlot</span>(<span class="dt">method =</span> <span class="st">&quot;iqr&quot;</span>, <span class="dt">columnName =</span> <span class="op">~</span>f2, <span class="dt">cutoffValue =</span> <span class="fl">0.01</span>, <span class="dt">priColor =</span> <span class="op">~</span>f1 , <span class="dt">optionalPlots =</span> <span class="dv">0</span>) -&gt;<span class="st"> </span>complexPipeline
+
+complexPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline</code></pre></div>
+<pre><code>## # A tibble: 4 x 6
+##   id    operation      heading              parameters outAsIn storeOutput
+##   &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;                &lt;list&gt;     &lt;lgl&gt;   &lt;lgl&gt;      
+## 1 1     getColor       &quot;&quot;                   &lt;list [1]&gt; FALSE   FALSE      
+## 2 2     getColumnName  &quot;&quot;                   &lt;list [1]&gt; FALSE   FALSE      
+## 3 3     univarCatDist… Univariate Distribu… &lt;list [4]&gt; FALSE   TRUE       
+## 4 4     outlierPlot    Univariate Outlier   &lt;list [6]&gt; FALSE   FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complexPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>op</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:30] ||  Engine Assessment for pipeline STARTED  ||
+## INFO [2019-01-03 13:12:30] ||  Engine Assessment COMPLETE. Time taken : 0.012681245803833 seconds||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Prep. STARTED  ||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Prep. COMPLETE. Time taken : 0.0110037326812744 seconds||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Execution STARTED  ||
+## INFO [2019-01-03 13:12:30] ||  Executing Batch Number : 1/2 containing functions 'getColor, getColumnName' ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '1' named 'getColor' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '1' named 'getColor' COMPLETED. Time taken : 0.0036170482635498 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '2' named 'getColumnName' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '2' named 'getColumnName' COMPLETED. Time taken : 0.00403928756713867 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Batch Number 1/2 COMPLETE. Time taken : 0.0178816318511963 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Executing Batch Number : 2/2 containing functions 'univarCatDistPlots, outlierPlot' ||
+## INFO [2019-01-03 13:12:30] ||  Cleared intermediate outputs which are not required  ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '3' named 'univarCatDistPlots' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '3' named 'univarCatDistPlots' COMPLETED. Time taken : 0.0115842819213867 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '4' named 'outlierPlot' STARTED on the 'r' engine ||
+## INFO [2019-01-03 13:12:30] ||  Function ID '4' named 'outlierPlot' COMPLETED. Time taken : 0.0538463592529297 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Batch Number 2/2 COMPLETE. Time taken : 0.0800571441650391 seconds  ||
+## INFO [2019-01-03 13:12:30] ||  Performing final garbage cleaning and collection of outputs  ||
+## INFO [2019-01-03 13:12:30] ||  Pipeline Execution COMPLETE. Time taken : 0.113564252853394 seconds||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">op <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="st">&quot;3&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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Ue+OAGVmZl6+fPmzzz6bM2fOqlWrKioqSktLFyxYMG3atOXLl2s0mpUrVwoh/vSnP+l0ugULFly+fHnVqlWzZs1atWqV2WzetGnTPQcpKChITU2dP3/+mjVr/Pz89uzZY99ieXl52q8uXLjgsk8OAADqSr0LQNXV1Uaj8erVq82bN9+yZYunp+ehQ4ciIiJatmyp0WhGjBhx8uRJx/6HDh2Kj49v2rSpRqMZOnTowYMH7zlIQEDAsmXLQkJCzGazTqcrLy+3j2AwGD741bFjx+r6AwMAgDpX706BxcfHFxQUzJ49u0GDBoMHD05MTCwqKjp16tSUKVOkDj4+Po79S0tLg4ODpeVGjRoVFxffcxCNRrNz587s7GyNRqNSqexvEUKEhobm5ORIy1lZWXXxIQEAgEvVuwB069atvn37Dhky5MSJEwsXLmzXrl1AQED37t0nTpwohLBYLEVFRY79AwMDCwsLpeWioiLplz13D3L58uXc3NzZs2cHBgampaUZjca6/2gAAKCeqHenwPbs2TN//nybzdamTRsPDw+j0dipU6cDBw5cu3bNarV+8cUXX375pdTTarXabLbOnTtnZGRcv369urr6q6++6tq16z0HKSkpCQkJkdJSRkZGZWWlSz8lAABwpXp3BCgxMfHEiRPJyclarbZnz54dOnRQqVQTJkx47733jEZjWFjY5MmThRBqtToyMvL1119fsmTJmDFjZs2aVVVV1aFDhxEjRtxzkFatWh04cGDcuHEhISGDBg3avHlzfn5+mzZtXP1xAQCAC6hsNpura6hHsrKyYmNj5RjZYDAkJXlptfUucT6Y1WpVq9UqlcrVhdSM2WxWq9UajcbVhdSMxWKRfqPm6kJqpqqqSqvVqtX17nDyg1ksFrfbH202m3QZh9t9Sdxxtqurqy0WC7NdN6xW69q1pUFBQXIMfr9/2d3sbxYAAMBvRwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKQwACAACKo3V1AQqycWO5n5+fq6uoGZOpSqvV6nQ6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" /><!-- --></p>
+</div>
+<div id="differences-between-outasin-and-formulae---when-to-use-what" class="section level2">
+<h2>Differences between <code>outAsIn</code> and formulae - When to use what</h2>
+<p>The package provides 2 mechanisms to pass outputs from previous functions to subsequent ones. The first one is the <code>outAsIn</code> parameter. This is limited only to <strong>transformations on data that the pipeline is instantiated with</strong> which need to be passed on and is limited to the output of the <em>immediate previous function</em> when defining the pipeline. This is provided as an easy-to-use intuitive interface for the common use case of performing a set of sequential data transformations on the input data before performing some kind of analysis. Therefore, this should be sufficient for simple, or linear pipelines.</p>
+<p>Formula semantics are provided to implement more complex pipelines, and are not limited to data parameters. Any type of object which is an output of a previous function can be used in a subsequent function. The typical use of these formulae are to provide parameters to certain functions in the pipeline, which are the result of previous functions. Formula semantics can be used for the <strong>data parameter</strong> of data functions as well. This uses the output of the function specified, instead of the input data the object was instantiated with.</p>
+<p>In essence, you can implement any kind of complex pipeline with formula semantics. The <code>outAsIn</code> parameter is provided as an easy-to-use shortcut for simpler linear pipelines. When a formula is specified for the first argument, the <code>outAsIn</code> parameter is rendered irrelevant.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exampleObj &lt;-<span class="st"> </span><span class="kw">AnalysisPipeline</span>(<span class="dt">input =</span> iris)
+
+filterData &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, conditionVar, val){
+  condition &lt;-<span class="st"> </span><span class="kw">paste0</span>(conditionVar, <span class="st">'== &quot;'</span>, val, <span class="st">'&quot;'</span>)
+  dataSub &lt;-<span class="st"> </span>dataset <span class="op">%&gt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter_</span>(condition)
+  <span class="kw">return</span>(dataSub)
+}
+
+summarizeData &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, conditionVar){
+  dataGrouped &lt;-<span class="st">  </span>dataset <span class="op">%&gt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by_</span>(conditionVar) <span class="op">%&gt;&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise_all</span>(dplyr<span class="op">::</span><span class="kw">funs</span>(<span class="dt">avg =</span> mean))
+  <span class="kw">return</span>(dataGrouped)
+}
+
+plotLine &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, y, x){
+    p &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(<span class="dt">data =</span> dataset, ggplot2<span class="op">::</span><span class="kw">aes_string</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> x)) <span class="op">+</span><span class="st"> </span>
+<span class="st">         </span>ggplot2<span class="op">::</span><span class="kw">geom_line</span>(<span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>)
+  <span class="kw">return</span>(p)
+}
+
+plotSummary &lt;-<span class="st"> </span><span class="cf">function</span>(d, summaryVar, groupingVar){
+  p &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(<span class="dt">data =</span> d, ggplot2<span class="op">::</span><span class="kw">aes_string</span>(<span class="dt">y =</span> <span class="kw">paste0</span>(summaryVar, <span class="st">&quot;_avg&quot;</span>), <span class="dt">x =</span> groupingVar)) <span class="op">+</span><span class="st"> </span>
+<span class="st">         </span>ggplot2<span class="op">::</span><span class="kw">geom_col</span>(<span class="dt">fill =</span> <span class="st">&quot;blue&quot;</span>)
+  <span class="kw">return</span>(p)
+}
+
+<span class="kw">registerFunction</span>(<span class="st">&quot;filterData&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:31] ||  Function 'filterData' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">registerFunction</span>(<span class="st">&quot;summarizeData&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:31] ||  Function 'summarizeData' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">registerFunction</span>(<span class="st">&quot;plotLine&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:31] ||  Function 'plotLine' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">registerFunction</span>(<span class="st">&quot;plotSummary&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:31] ||  Function 'plotSummary' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exampleObj <span class="op">%&gt;&gt;%</span><span class="st">  </span><span class="kw">summarizeData</span>(<span class="dt">conditionVar =</span> <span class="st">&quot;Species&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
+<span class="st">                </span><span class="kw">filterData</span>(<span class="dt">conditionVar =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">val =</span> <span class="st">&quot;setosa&quot;</span>, <span class="dt">outAsIn =</span> F, <span class="dt">storeOutput =</span> F) <span class="op">%&gt;&gt;%</span>
+<span class="st">                </span><span class="kw">plotLine</span>(<span class="dt">y =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Sepal.Width&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) <span class="op">%&gt;&gt;%</span>
+<span class="st">                </span><span class="kw">plotSummary</span>(<span class="dt">d =</span> <span class="op">~</span>f1, <span class="dt">summaryVar =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">groupingVar =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">storeOutput =</span> T) -&gt;
+<span class="st">  </span>exampleObj
+
+<span class="co">#exampleObj %&gt;&gt;% visualizePipeline</span>
+<span class="co">#exampleObj %&gt;&gt;% generateOutput %&gt;&gt;% getOutputById(&quot;4&quot;)</span></code></pre></div>
+</div>
+</div>
+<div id="visualizing-pipelines" class="section level1">
+<h1>Visualizing pipelines</h1>
+<p>These pipelines can be visualized by calling the <code>visualizePipeline</code> method. This generates the whole pipeline as a network, showing the engines on which each function is run, and which outputs are stored.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complexPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline</code></pre></div>
+</div>
+<div id="generating-reports" class="section level1">
+<h1>Generating reports</h1>
+<p>The generated output can easily be rendered into a beautiful, formatted report by calling the <code>generateReport</code> method. The report is a <em>html</em> file which contains the stored outputs, as well as a peek into the data and the pipeline that was executed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj2Output <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">generateReport</span>(<span class="dt">path =</span> <span class="st">'~/Desktop'</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">objRep &lt;-<span class="st"> </span>obj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">bivariatePlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">'Petal.Length'</span>,<span class="dt">select_var_name_2 =</span>  <span class="st">'Petal.Width'</span>, 
+                           <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;black&quot;</span>)
+
+objRep <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">generateReport</span>(<span class="dt">path =</span> <span class="st">'~/Desktop'</span>)</code></pre></div>
+</div>
+<div id="saving-and-loading-pipelines" class="section level1">
+<h1>Saving and loading pipelines</h1>
+<p>Pipelines can also be saved and loaded for re-use and execution on new data. The pipeline can be saved by calling the <code>savePipeline</code> function. On save, both the pipeline and the existing state of the registry is saved (including both predefined as well as user-defined functions).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">savePipeline</span>(<span class="dt">path =</span> <span class="st">'pipeline.RDS'</span>)</code></pre></div>
+<p>This pipeline can be loaded and while loading <em>instantiated</em> with a new dataset of the <em>same</em> schema as that which was used in the original pipeline (in order to prevent errors). This can be used for a variety of purposes such as:</p>
+<ul>
+<li>predict on new data</li>
+<li>perform certain data manipulations on new data</li>
+<li>re-run the analysis on a different subset</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(analysisPipelines)
+obj3 &lt;-<span class="st"> </span><span class="kw">loadPipeline</span>(<span class="dt">path =</span> <span class="st">'pipeline.RDS'</span>, <span class="dt">input =</span> iris) 
+<span class="kw">getRegistry</span>()
+obj2 <span class="op">%&gt;%</span><span class="st"> </span>getPipeline</code></pre></div>
+</div>
+<div id="details-of-execution" class="section level1">
+<h1>Details of execution</h1>
+<p>This section provides an overview of how pipelines are executed, along with additional features such as <strong>logging</strong> and <strong>exception handling.</strong></p>
+<div id="execution-mechanism" class="section level2">
+<h2>Execution mechanism</h2>
+<p>The ‘analysisPipelines’ package internally converts the pipeline defined by the user into a <strong>directed graph</strong> which captures dependencies of each function in the pipeline on data, other arguments as well as outputs as other functions.</p>
+<div id="topological-sort-and-ordering" class="section level3">
+<h3>Topological sort and ordering</h3>
+<p>When it is required to generate the output, the pipeline is first <em>prepped</em> by performing a <strong>topological sort</strong> of the directed graph, and identifying <em>sets (or) batches</em> of independent functions and a sequence of <em>batches</em> for execution. A later release of the package will allow for parallel execution of these independent functions</p>
+</div>
+<div id="memory-management-garbage-cleaning" class="section level3">
+<h3>Memory management &amp; garbage cleaning</h3>
+<p>Memory is managed efficiently, by only storing outputs which the user has explicitly specified, or temporarily storing intermediate outputs required for subsequent functions <strong>only until</strong> they are required for processing. Garbage cleaning is performed after the execution of each <em>batch</em> in order to manage memory effectively.</p>
+</div>
+<div id="type-conversions" class="section level3">
+<h3>Type conversions</h3>
+<p>In the case of <em>Interoperable pipelines</em> executing across multiple engines such as <em>R, Spark and Python</em>, type conversions between data types in the different engines is <strong>minimized</strong> by identifying the optimal number of type conversions, before execution starts</p>
+</div>
+</div>
+<div id="logging-execution-times" class="section level2">
+<h2>Logging &amp; Execution times</h2>
+<p>The package provides logging capabilities for execution of pipelines, as you might have noted when the output was generated in sections above. By default, logs are written to the <em>console</em>, but alternatively the user can specify an output file to which the logs need to be written through the <code>setLoggerDetails</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">setLoggerDetails</span>(<span class="dt">target =</span> <span class="st">&quot;file&quot;</span>) -&gt;<span class="st"> </span>obj2</code></pre></div>
+<p>Logs capture errors, as well as provide information on the steps being performed, execution times and so on.</p>
+</div>
+<div id="custom-exception-handling" class="section level2">
+<h2>Custom exception-handling</h2>
+<p>By default, when a function is registered, a generic exception handling function which captures the R error message, in case of error is registered against each function in the registry. The user can define a custom exception handling function, by defining it and providing it during the time of registration. The function should take 1 argument, which is the error object.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sampleFunction &lt;-<span class="st"> </span><span class="cf">function</span>(text){
+  <span class="kw">return</span>(text)
+}
+
+sampleException &lt;-<span class="st"> </span><span class="cf">function</span>(error){
+  <span class="kw">stop</span>(<span class="st">&quot;There was an error with the provided input&quot;</span>)
+}
+
+<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">'sampleFunction'</span>, <span class="st">&quot;Sample&quot;</span>, <span class="dt">exceptionFunction =</span> <span class="st">&quot;sampleException&quot;</span>)</code></pre></div>
+<pre><code>## INFO [2019-01-03 13:12:31] ||  Function 'sampleFunction' was registered successfully  ||</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getRegistry</span>()</code></pre></div>
+<pre><code>## # A tibble: 16 x 7
+##    functionName heading engine exceptionHandli… userDefined isDataFunction
+##    &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;lgl&gt;       &lt;lgl&gt;         
+##  1 univarCatDi… Univar… r      genericPipeline… FALSE       TRUE          
+##  2 outlierPlot  Univar… r      genericPipeline… FALSE       TRUE          
+##  3 multiVarOut… Multiv… r      genericPipeline… FALSE       TRUE          
+##  4 ignoreCols   Ignore… r      genericPipeline… FALSE       TRUE          
+##  5 getFeatures… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+##  6 getTargetFo… &quot;&quot;      r      genericPipeline… FALSE       TRUE          
+##  7 castKafkaSt… Cast K… spark… genericPipeline… FALSE       TRUE          
+##  8 convertKafk… Conver… spark… genericPipeline… FALSE       TRUE          
+##  9 bivariatePl… Bivari… r      genericPipeline… TRUE        TRUE          
+## 10 getColor     &quot;&quot;      r      genericPipeline… TRUE        FALSE         
+## 11 getColumnNa… &quot;&quot;      r      genericPipeline… TRUE        FALSE         
+## 12 filterData   &quot;&quot;      r      genericPipeline… TRUE        TRUE          
+## 13 summarizeDa… &quot;&quot;      r      genericPipeline… TRUE        TRUE          
+## 14 plotLine     &quot;&quot;      r      genericPipeline… TRUE        TRUE          
+## 15 plotSummary  &quot;&quot;      r      genericPipeline… TRUE        TRUE          
+## 16 sampleFunct… Sample  r      sampleException  TRUE        TRUE          
+## # ... with 1 more variable: firstArgClass &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div id="saving-and-loading-registries" class="section level1">
+<h1>Saving and loading registries</h1>
+<p>Registries can be saved and loaded like pipelines. The characteristic of the registry is that it is shared across all pipelines in a particular session. Therefore, when a registry is loaded it overwrites the existing registry in the session</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getRegistry</span>()
+<span class="kw">saveRegistry</span>(<span class="st">&quot;./registry.RDS&quot;</span>)
+##.rs.restartR() # Run this on console to restart the R session
+<span class="kw">rm</span>(<span class="dt">list=</span><span class="kw">ls</span>(<span class="dt">all=</span><span class="ot">TRUE</span>)) <span class="co"># Remove all objects in the R environment</span>
+<span class="kw">getRegistry</span>()
+
+<span class="kw">loadRegistry</span>(<span class="st">&quot;./registry.RDS&quot;</span>)
+<span class="kw">getRegistry</span>()</code></pre></div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

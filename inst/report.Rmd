@@ -1,0 +1,57 @@
+---
+title: "Analysis Pipeline Results"
+
+subtitle: '`r format(Sys.Date(), "%B %d, %Y")`'
+
+output: html_document
+  
+params:
+  obj: r! analysisPipelines::AnalysisPipeline() 
+---
+
+## Pipeline Visualization
+
+```{r echo=FALSE, warning=FALSE, comment=FALSE, message=FALSE, results='asis', fig.width = 12, out.width = '100%'}
+obj <- params$obj
+input <- obj@input
+pipelineDetails <-obj@pipeline
+output <- obj@output
+
+
+analysisPipelines::visualizePipeline(obj)
+```
+
+
+## Quick Peek
+```{r quick peek,echo=FALSE,warning=FALSE,results='asis', fig.width = 12, out.width = '100%'}
+DT::datatable(head(input),options = list(scrollX = T, scrollY = T))
+```
+
+
+```{r, echo =FALSE,warnings=FALSE,results='asis'}
+
+knitString <- ""
+
+storedOps <- pipelineDetails %>>% dplyr::filter(storeOutput == T)
+
+for(i in storedOps$id){
+          opTable <- storedOps %>>% dplyr::filter(id == i)
+          obj%>>% getOutputById(i) -> op
+          eval(parse(text = paste0("op_", i, " <- op")))
+          knit_expanded <- paste0(
+            "\n```{r chunk",i,",results='asis', fig.width = 12, out.width = '100%', echo=FALSE}
+            \n\n
+            cat('## ",opTable$heading," \n')
+            \n\n
+            op_", i, "
+            \n```
+            \n\n"
+        )
+        knitString <- paste0(knitString, knit_expanded)
+}
+
+```
+
+
+`r paste(knitr::knit(text = knitString), collapse = '\n')`
+

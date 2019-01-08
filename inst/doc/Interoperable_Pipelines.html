@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Naren Srinivasan" />
+
+<meta name="date" content="2018-11-13" />
+
+<title>Interoperable analysis pipelines</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Interoperable analysis pipelines</h1>
+<h4 class="author"><em>Naren Srinivasan</em></h4>
+<h4 class="date"><em>11/13/2018</em></h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#important-note">Important Note</a></li>
+<li><a href="#an-example-of-an-interoperable-pipeline">An example of an interoperable pipeline</a><ul>
+<li><a href="#initializing-a-spark-connection-from-r-and-loading-the-data">Initializing a Spark connection from R and loading the data</a></li>
+<li><a href="#initializing-python-connection">Initializing Python connection</a></li>
+<li><a href="#creating-an-analysispipeline-object">Creating an analysisPipeline object</a></li>
+<li><a href="#registering-functions-to-work-in-the-spark-environment">Registering functions to work in the Spark environment</a></li>
+<li><a href="#registering-r-functions">Registering R functions</a></li>
+<li><a href="#registering-python-functions">Registering Python functions</a></li>
+<li><a href="#interoperable-pipeline-containing-r-spark-and-python-functions">Interoperable pipeline containing R, Spark and Python functions</a></li>
+</ul></li>
+<li><a href="#supplementary-note">Supplementary Note</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This vignette explains how <strong>interoperable pipelines</strong> containing functions operating on different engines such as R, Spark and Python can be configured and executed through the <strong>analysisPipelines</strong> package. Currently, the package supports interoperable pipelines containing R and Spark batch functions.</p>
+<p>If the package is new to you, it is recommended that you go through the <em>Analysis pipelines - Core functionality and working with R data frames and functions</em> vignette first.</p>
+</div>
+<div id="important-note" class="section level1">
+<h1>Important Note</h1>
+<p>Using <em>Spark</em> as an engine requires the <em>SparkR</em> package to be installed. <em>SparkR</em> is distributed natively with <em>Apache Spark</em> and is not distributed on CRAN.</p>
+</div>
+<div id="an-example-of-an-interoperable-pipeline" class="section level1">
+<h1>An example of an interoperable pipeline</h1>
+<p>In this vignette we demonstrate an interoperable pipeline built using the <strong>analysisPipelines</strong> package, which contains a couple of filtering/ aggregation functions performed in <em>Spark</em>, which is then subsequently visualized through <em>R</em> functions using <em>ggplot2</em></p>
+<div id="initializing-a-spark-connection-from-r-and-loading-the-data" class="section level2">
+<h2>Initializing a Spark connection from R and loading the data</h2>
+<p>We initialize a Spark session using the <code>sparkRSessionCreateIfNotPresent</code> helper function in the <strong>analysisPipelines</strong> package, which internally uses <em>SparkR</em>. We then read the data into the Spark session using functions in the SparkR package. In this case we read a <em>.csv</em> file, though SparkR can work with multiple other data sources</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Define these variables as per the configuration of your machine. This is just an example.
+sparkHome &lt;-<span class="st"> &quot;/Users/naren/softwares/spark-2.3.1-bin-hadoop2.7/&quot;</span>
+sparkMaster &lt;-<span class="st"> &quot;local[1]&quot;</span>
+sparkPackages &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.1&quot;</span>)
+
+<span class="kw">sparkRSessionCreateIfNotPresent</span>(<span class="dt">sparkHome =</span> sparkHome, <span class="dt">master =</span> sparkMaster, <span class="dt">sparkPackages =</span> sparkPackages)
+
+inputDataset &lt;-<span class="st"> </span>iris
+
+<span class="co"># Replacing '.' in column names with '_' as SparkR is not able to deal with '.' in column names</span>
+<span class="kw">colnames</span>(inputDataset) &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.&quot;</span>, <span class="st">&quot;_&quot;</span>, <span class="kw">colnames</span>(inputDataset), <span class="dt">fixed =</span> T)</code></pre></div>
+</div>
+<div id="initializing-python-connection" class="section level2">
+<h2>Initializing Python connection</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Define these variables as per the configuration of your machine. This is just an example.
+
+analysisPipelines<span class="op">::</span><span class="kw">setPythonEnvir</span>(<span class="st">'python'</span>, <span class="st">'/Users/naren/anaconda3/bin/python'</span>)
+os &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;os&quot;</span>)
+numpy &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;numpy&quot;</span>)
+pandas &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;pandas&quot;</span>)
+sklearn &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;sklearn&quot;</span>)
+
+reticulate<span class="op">::</span><span class="kw">source_python</span>(<span class="kw">system.file</span>(<span class="st">&quot;python/sampleFunctions.py&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;analysisPipelines&quot;</span>))
+
+reticulate<span class="op">::</span><span class="kw">py_config</span>()</code></pre></div>
+</div>
+<div id="creating-an-analysispipeline-object" class="section level2">
+<h2>Creating an analysisPipeline object</h2>
+<p>We then initialize an <em>AnalysisPipeline</em>, with the input dataset</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj &lt;-<span class="st"> </span><span class="kw">AnalysisPipeline</span>(<span class="dt">input =</span> inputDataset)</code></pre></div>
+</div>
+<div id="registering-functions-to-work-in-the-spark-environment" class="section level2">
+<h2>Registering functions to work in the Spark environment</h2>
+<p>In order to manipulate the data in the Spark environment, we define our own functions using SparkR interface functions. We then <strong>register</strong> these functions with the <strong>AnalysisPipeline</strong> object, so that they can be used in constructing a pipeline.</p>
+<p>The <code>getRegistry</code> function lists all the registered functions, along with details such as which <strong>engine</strong> they should run on.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">getSchema &lt;-<span class="st"> </span><span class="cf">function</span>(inputDataset) {
+  sparkSchema &lt;-<span class="st"> </span>SparkR<span class="op">::</span><span class="kw">schema</span>(inputDataset)
+ <span class="kw">return</span>(sparkSchema)
+}
+
+filterData &lt;-<span class="st"> </span><span class="cf">function</span>(inputDataset, condition) {
+  filteredData &lt;-<span class="st"> </span>SparkR<span class="op">::</span><span class="kw">filter</span>(inputDataset, condition)
+ <span class="kw">return</span>(filteredData)
+}
+
+<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getSchema&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;spark&quot;</span>) 
+<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;filterData&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;spark&quot;</span>) 
+
+
+<span class="kw">getRegistry</span>()</code></pre></div>
+</div>
+<div id="registering-r-functions" class="section level2">
+<h2>Registering R functions</h2>
+<p>Similar to the Spark functions, we register some user-defined functions in R. In this case to plot a bivariate plot using <em>ggplot2</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rBivarPlots &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>, <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor=</span> <span class="st">&quot;black&quot;</span>) {
+
+  numeric_cols &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">getDatatype</span>(dataset)[<span class="st">'numeric_cols'</span>])
+  cat_cols &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">getDatatype</span>(dataset)[<span class="st">'cat_cols'</span>])
+
+  <span class="cf">if</span> (select_var_name_<span class="dv">1</span> <span class="op">%in%</span><span class="st"> </span>numeric_cols <span class="op">&amp;&amp;</span><span class="st"> </span>select_var_name_<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span>numeric_cols) {
+    x =<span class="st"> </span>dataset[, select_var_name_<span class="dv">1</span>]
+    y =<span class="st"> </span>dataset[, select_var_name_<span class="dv">2</span>]
+    bivarPlot &lt;-
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(x, y)) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color =</span> priColor, <span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> lm, <span class="dt">color =</span> secColor) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(select_var_name_<span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(
+        <span class="st">'Bivariate plot for'</span>,
+        select_var_name_<span class="dv">1</span>,
+        <span class="st">'and'</span>,
+        select_var_name_<span class="dv">2</span>,
+        <span class="dt">sep =</span> <span class="st">' '</span>
+      )) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(
+        <span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),
+        <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>),
+        <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>)
+      )
+
+
+
+  } <span class="cf">else</span> <span class="cf">if</span> (select_var_name_<span class="dv">1</span> <span class="op">%in%</span><span class="st"> </span>cat_cols <span class="op">&amp;&amp;</span>
+<span class="st">             </span>select_var_name_<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span>cat_cols) {
+    new_df &lt;-<span class="st"> </span>dataset <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by_</span>(<span class="dt">.dots=</span><span class="kw">c</span>(select_var_name_<span class="dv">1</span>,select_var_name_<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n =</span> dplyr<span class="op">::</span><span class="kw">n</span>())
+    colfunc &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(priColor, <span class="st">&quot;white&quot;</span> , secColor))
+    colorvar &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(new_df[[select_var_name_<span class="dv">2</span>]]))
+    a=<span class="kw">as.vector</span>(<span class="kw">as.character</span>(<span class="kw">unique</span>(new_df[[select_var_name_<span class="dv">1</span>]])))
+    y=new_df[[select_var_name_<span class="dv">1</span>]]
+    label=new_df[[select_var_name_<span class="dv">2</span>]]
+    bivarPlot &lt;-ggplot2<span class="op">::</span><span class="kw">ggplot</span>(new_df, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> y, <span class="dt">y=</span> n, <span class="dt">fill =</span> label)) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>, <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>,<span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">guides</span>(<span class="dt">fill=</span>ggplot2<span class="op">::</span><span class="kw">guide_legend</span>(<span class="dt">title=</span>select_var_name_<span class="dv">2</span>)) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>()<span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(<span class="st">&quot;count&quot;</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">'Bivariate plot for'</span>,select_var_name_<span class="dv">1</span>,<span class="st">'and'</span>,select_var_name_<span class="dv">2</span>,<span class="dt">sep=</span><span class="st">' '</span>))<span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),<span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),
+                     <span class="dt">axis.title=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>,<span class="dt">axis.text.x=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">45</span>, <span class="dt">hjust=</span><span class="dv">1</span>))<span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">colfunc</span>(colorvar))
+
+
+  } <span class="cf">else</span> {
+    cols &lt;-<span class="st"> </span><span class="kw">c</span>(select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>)
+    cat_col &lt;-<span class="st"> </span>cols[<span class="kw">which</span>(cols <span class="op">%in%</span><span class="st"> </span>cat_cols)]
+    num_col &lt;-<span class="st"> </span>cols[<span class="kw">which</span>(cols <span class="op">%in%</span><span class="st"> </span>numeric_cols)]
+    a =<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">as.character</span>(<span class="kw">unique</span>(dataset[[cat_col]])))
+    y =<span class="st"> </span>dataset[[cat_col]]
+    x =<span class="st"> </span>dataset[[num_col]]
+    bivarPlot &lt;-
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> y, <span class="dt">y =</span> x)) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color =</span> priColor, <span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>() <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(cat_col) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(num_col) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(
+        <span class="st">'Bivariate plot for'</span>,
+        select_var_name_<span class="dv">1</span>,
+        <span class="st">'and'</span>,
+        select_var_name_<span class="dv">2</span>,
+        <span class="dt">sep =</span> <span class="st">' '</span>
+      )) <span class="op">+</span>
+<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(
+        <span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),
+        <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>),
+        <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>)
+      )
+  }
+
+  <span class="kw">return</span>(bivarPlot)
+}
+
+<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;rBivarPlots&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">heading =</span> <span class="st">&quot;Bivariate analysis&quot;</span>)
+
+<span class="kw">getRegistry</span>()</code></pre></div>
+</div>
+<div id="registering-python-functions" class="section level2">
+<h2>Registering Python functions</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">registerFunction</span>(<span class="st">&quot;decisionTreeTrainAndTest&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;python&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;numpy.ndarray&quot;</span>)
+<span class="kw">getRegistry</span>()</code></pre></div>
+</div>
+<div id="interoperable-pipeline-containing-r-spark-and-python-functions" class="section level2">
+<h2>Interoperable pipeline containing R, Spark and Python functions</h2>
+<ul>
+<li>Here we consider a typical use case of performing data filtering/ aggregations and so on and Spark, and then using R to visualize, and Python to run a Machine learning model</li>
+</ul>
+<p>We first visualize the data without filtering:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, 
+                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>vizWithoutFilterPipeline
+vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline
+vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>assessEngineSetUp
+vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWithoutFilter
+opWithoutFilter <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">1</span>)</code></pre></div>
+<p>We then perform filtering on one of the variables in Spark, before visualizing in R</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Species == 'setosa'&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, 
+                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>singleFilterPipeline
+singleFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline
+
+singleFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWithFilter
+opWithFilter <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">2</span>)</code></pre></div>
+<p>Finally, we show a case, where sequential filtering steps are performed in Spark, before visualizing in R, and running a decision tree model in Python.</p>
+<p>Note, that in this case, <code>getTargetForPyClassifcation</code> and <code>getTargetForPyClassification</code> have been registered as <em>data</em> functions. Type conversions between R, Spark and Python for data functions are performed automatically by the package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Species == 'setosa' or Species == 'virginica'&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Petal_Length &gt; 3.7&quot;</span>, <span class="dt">outAsIn =</span> T) <span class="op">%&gt;&gt;%</span>
+<span class="st">  </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, 
+                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) <span class="op">%&gt;&gt;%</span>
+<span class="st">  </span><span class="kw">getFeaturesForPyClassification</span>(<span class="dt">dataset =</span> <span class="op">~</span>f2, <span class="dt">featureNames =</span> <span class="kw">c</span>(<span class="st">&quot;Sepal_Length&quot;</span>,
+                                                                 <span class="st">&quot;Sepal_Width&quot;</span>,
+                                                                 <span class="st">&quot;Petal_Length&quot;</span>)) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
+<span class="st">          </span><span class="kw">getTargetForPyClassification</span>(<span class="dt">dataset =</span> <span class="op">~</span>f2, <span class="dt">targetVarName =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">positiveClass =</span> <span class="st">&quot;setosa&quot;</span>) <span class="op">%&gt;&gt;%</span>
+<span class="st">          </span><span class="kw">decisionTreeTrainAndTest_py</span>(<span class="dt">data =</span> <span class="op">~</span>f4, <span class="dt">target =</span> <span class="op">~</span>f5, <span class="dt">newData =</span> <span class="op">~</span>f4, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>twoFilterPipeline
+
+twoFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline
+
+twoFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWith2Filters
+opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">3</span>)
+opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">6</span>)</code></pre></div>
+</div>
+</div>
+<div id="supplementary-note" class="section level1">
+<h1>Supplementary Note</h1>
+<p>The <em>analysisPipelines</em> package internally uses the <em>SparkR</em> package to interface with <em>Spark</em>. <em>SparkR</em> masks many typical data manipulation and processing functions from <em>base</em> as well as packages like <em>dplyr</em>. Therefore, ensure you use function scoping when calling a function.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
