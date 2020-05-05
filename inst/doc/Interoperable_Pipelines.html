@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,47 +20,280 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -69,8 +303,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Interoperable analysis pipelines</h1>
-<h4 class="author"><em>Naren Srinivasan</em></h4>
-<h4 class="date"><em>11/13/2018</em></h4>
+<h4 class="author">Naren Srinivasan</h4>
+<h4 class="date">11/13/2018</h4>
 
 
 <div id="TOC">
@@ -79,7 +313,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="#important-note">Important Note</a></li>
 <li><a href="#an-example-of-an-interoperable-pipeline">An example of an interoperable pipeline</a><ul>
 <li><a href="#initializing-a-spark-connection-from-r-and-loading-the-data">Initializing a Spark connection from R and loading the data</a></li>
-<li><a href="#initializing-python-connection">Initializing Python connection</a></li>
 <li><a href="#creating-an-analysispipeline-object">Creating an analysisPipeline object</a></li>
 <li><a href="#registering-functions-to-work-in-the-spark-environment">Registering functions to work in the Spark environment</a></li>
 <li><a href="#registering-r-functions">Registering R functions</a></li>
@@ -105,146 +338,144 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="initializing-a-spark-connection-from-r-and-loading-the-data" class="section level2">
 <h2>Initializing a Spark connection from R and loading the data</h2>
 <p>We initialize a Spark session using the <code>sparkRSessionCreateIfNotPresent</code> helper function in the <strong>analysisPipelines</strong> package, which internally uses <em>SparkR</em>. We then read the data into the Spark session using functions in the SparkR package. In this case we read a <em>.csv</em> file, though SparkR can work with multiple other data sources</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Define these variables as per the configuration of your machine. This is just an example.
-sparkHome &lt;-<span class="st"> &quot;/Users/naren/softwares/spark-2.3.1-bin-hadoop2.7/&quot;</span>
-sparkMaster &lt;-<span class="st"> &quot;local[1]&quot;</span>
-sparkPackages &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.1&quot;</span>)
-
-<span class="kw">sparkRSessionCreateIfNotPresent</span>(<span class="dt">sparkHome =</span> sparkHome, <span class="dt">master =</span> sparkMaster, <span class="dt">sparkPackages =</span> sparkPackages)
-
-inputDataset &lt;-<span class="st"> </span>iris
-
-<span class="co"># Replacing '.' in column names with '_' as SparkR is not able to deal with '.' in column names</span>
-<span class="kw">colnames</span>(inputDataset) &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.&quot;</span>, <span class="st">&quot;_&quot;</span>, <span class="kw">colnames</span>(inputDataset), <span class="dt">fixed =</span> T)</code></pre></div>
-</div>
-<div id="initializing-python-connection" class="section level2">
-<h2>Initializing Python connection</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Define these variables as per the configuration of your machine. This is just an example.
-
-analysisPipelines<span class="op">::</span><span class="kw">setPythonEnvir</span>(<span class="st">'python'</span>, <span class="st">'/Users/naren/anaconda3/bin/python'</span>)
-os &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;os&quot;</span>)
-numpy &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;numpy&quot;</span>)
-pandas &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;pandas&quot;</span>)
-sklearn &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;sklearn&quot;</span>)
-
-reticulate<span class="op">::</span><span class="kw">source_python</span>(<span class="kw">system.file</span>(<span class="st">&quot;python/sampleFunctions.py&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;analysisPipelines&quot;</span>))
-
-reticulate<span class="op">::</span><span class="kw">py_config</span>()</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">## Define these variables as per the configuration of your machine. This is just an example.</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">sparkHome &lt;-<span class="st"> &quot;/Users/naren/softwares/spark-2.3.1-bin-hadoop2.7/&quot;</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">sparkMaster &lt;-<span class="st"> &quot;local[1]&quot;</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">sparkPackages &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.1&quot;</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">sparkRSessionCreateIfNotPresent</span>(<span class="dt">sparkHome =</span> sparkHome, <span class="dt">master =</span> sparkMaster, <span class="dt">sparkPackages =</span> sparkPackages)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">inputDataset &lt;-<span class="st"> </span>iris</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># Replacing '.' in column names with '_' as SparkR is not able to deal with '.' in column names</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">colnames</span>(inputDataset) &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;.&quot;</span>, <span class="st">&quot;_&quot;</span>, <span class="kw">colnames</span>(inputDataset), <span class="dt">fixed =</span> T)</a></code></pre></div>
+<p>##Initializing Python connection</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## Define these variables as per the configuration of your machine. This is just an example.</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">analysisPipelines<span class="op">::</span><span class="kw">setPythonEnvir</span>(<span class="st">'python'</span>, <span class="st">'/Users/naren/anaconda3/bin/python'</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">os &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;os&quot;</span>)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">numpy &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;numpy&quot;</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">pandas &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;pandas&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">sklearn &lt;-<span class="st"> </span>reticulate<span class="op">::</span><span class="kw">import</span>(<span class="st">&quot;sklearn&quot;</span>)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">reticulate<span class="op">::</span><span class="kw">source_python</span>(<span class="kw">system.file</span>(<span class="st">&quot;python/sampleFunctions.py&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;analysisPipelines&quot;</span>))</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">reticulate<span class="op">::</span><span class="kw">py_config</span>()</a></code></pre></div>
 </div>
 <div id="creating-an-analysispipeline-object" class="section level2">
 <h2>Creating an analysisPipeline object</h2>
 <p>We then initialize an <em>AnalysisPipeline</em>, with the input dataset</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj &lt;-<span class="st"> </span><span class="kw">AnalysisPipeline</span>(<span class="dt">input =</span> inputDataset)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pipelineObj &lt;-<span class="st"> </span><span class="kw">AnalysisPipeline</span>(<span class="dt">input =</span> inputDataset)</a></code></pre></div>
 </div>
 <div id="registering-functions-to-work-in-the-spark-environment" class="section level2">
 <h2>Registering functions to work in the Spark environment</h2>
 <p>In order to manipulate the data in the Spark environment, we define our own functions using SparkR interface functions. We then <strong>register</strong> these functions with the <strong>AnalysisPipeline</strong> object, so that they can be used in constructing a pipeline.</p>
 <p>The <code>getRegistry</code> function lists all the registered functions, along with details such as which <strong>engine</strong> they should run on.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">getSchema &lt;-<span class="st"> </span><span class="cf">function</span>(inputDataset) {
-  sparkSchema &lt;-<span class="st"> </span>SparkR<span class="op">::</span><span class="kw">schema</span>(inputDataset)
- <span class="kw">return</span>(sparkSchema)
-}
-
-filterData &lt;-<span class="st"> </span><span class="cf">function</span>(inputDataset, condition) {
-  filteredData &lt;-<span class="st"> </span>SparkR<span class="op">::</span><span class="kw">filter</span>(inputDataset, condition)
- <span class="kw">return</span>(filteredData)
-}
-
-<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getSchema&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;spark&quot;</span>) 
-<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;filterData&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;spark&quot;</span>) 
-
-
-<span class="kw">getRegistry</span>()</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">getSchema &lt;-<span class="st"> </span><span class="cf">function</span>(inputDataset) {</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  sparkSchema &lt;-<span class="st"> </span>SparkR<span class="op">::</span><span class="kw">schema</span>(inputDataset)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"> <span class="kw">return</span>(sparkSchema)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">}</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">filterData &lt;-<span class="st"> </span><span class="cf">function</span>(inputDataset, condition) {</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">  filteredData &lt;-<span class="st"> </span>SparkR<span class="op">::</span><span class="kw">filter</span>(inputDataset, condition)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"> <span class="kw">return</span>(filteredData)</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getSchema&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;spark&quot;</span>) </a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;filterData&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;spark&quot;</span>) </a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="kw">getRegistry</span>()</a></code></pre></div>
 </div>
 <div id="registering-r-functions" class="section level2">
 <h2>Registering R functions</h2>
 <p>Similar to the Spark functions, we register some user-defined functions in R. In this case to plot a bivariate plot using <em>ggplot2</em>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rBivarPlots &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>, <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor=</span> <span class="st">&quot;black&quot;</span>) {
-
-  numeric_cols &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">getDatatype</span>(dataset)[<span class="st">'numeric_cols'</span>])
-  cat_cols &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">getDatatype</span>(dataset)[<span class="st">'cat_cols'</span>])
-
-  <span class="cf">if</span> (select_var_name_<span class="dv">1</span> <span class="op">%in%</span><span class="st"> </span>numeric_cols <span class="op">&amp;&amp;</span><span class="st"> </span>select_var_name_<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span>numeric_cols) {
-    x =<span class="st"> </span>dataset[, select_var_name_<span class="dv">1</span>]
-    y =<span class="st"> </span>dataset[, select_var_name_<span class="dv">2</span>]
-    bivarPlot &lt;-
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(x, y)) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color =</span> priColor, <span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> lm, <span class="dt">color =</span> secColor) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(select_var_name_<span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(
-        <span class="st">'Bivariate plot for'</span>,
-        select_var_name_<span class="dv">1</span>,
-        <span class="st">'and'</span>,
-        select_var_name_<span class="dv">2</span>,
-        <span class="dt">sep =</span> <span class="st">' '</span>
-      )) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(
-        <span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),
-        <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>),
-        <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>)
-      )
-
-
-
-  } <span class="cf">else</span> <span class="cf">if</span> (select_var_name_<span class="dv">1</span> <span class="op">%in%</span><span class="st"> </span>cat_cols <span class="op">&amp;&amp;</span>
-<span class="st">             </span>select_var_name_<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span>cat_cols) {
-    new_df &lt;-<span class="st"> </span>dataset <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by_</span>(<span class="dt">.dots=</span><span class="kw">c</span>(select_var_name_<span class="dv">1</span>,select_var_name_<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n =</span> dplyr<span class="op">::</span><span class="kw">n</span>())
-    colfunc &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(priColor, <span class="st">&quot;white&quot;</span> , secColor))
-    colorvar &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(new_df[[select_var_name_<span class="dv">2</span>]]))
-    a=<span class="kw">as.vector</span>(<span class="kw">as.character</span>(<span class="kw">unique</span>(new_df[[select_var_name_<span class="dv">1</span>]])))
-    y=new_df[[select_var_name_<span class="dv">1</span>]]
-    label=new_df[[select_var_name_<span class="dv">2</span>]]
-    bivarPlot &lt;-ggplot2<span class="op">::</span><span class="kw">ggplot</span>(new_df, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> y, <span class="dt">y=</span> n, <span class="dt">fill =</span> label)) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>, <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>,<span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">guides</span>(<span class="dt">fill=</span>ggplot2<span class="op">::</span><span class="kw">guide_legend</span>(<span class="dt">title=</span>select_var_name_<span class="dv">2</span>)) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>()<span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(<span class="st">&quot;count&quot;</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">'Bivariate plot for'</span>,select_var_name_<span class="dv">1</span>,<span class="st">'and'</span>,select_var_name_<span class="dv">2</span>,<span class="dt">sep=</span><span class="st">' '</span>))<span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),<span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),
-                     <span class="dt">axis.title=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>,<span class="dt">axis.text.x=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">45</span>, <span class="dt">hjust=</span><span class="dv">1</span>))<span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">colfunc</span>(colorvar))
-
-
-  } <span class="cf">else</span> {
-    cols &lt;-<span class="st"> </span><span class="kw">c</span>(select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>)
-    cat_col &lt;-<span class="st"> </span>cols[<span class="kw">which</span>(cols <span class="op">%in%</span><span class="st"> </span>cat_cols)]
-    num_col &lt;-<span class="st"> </span>cols[<span class="kw">which</span>(cols <span class="op">%in%</span><span class="st"> </span>numeric_cols)]
-    a =<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">as.character</span>(<span class="kw">unique</span>(dataset[[cat_col]])))
-    y =<span class="st"> </span>dataset[[cat_col]]
-    x =<span class="st"> </span>dataset[[num_col]]
-    bivarPlot &lt;-
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> y, <span class="dt">y =</span> x)) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color =</span> priColor, <span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>() <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(cat_col) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(num_col) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(
-        <span class="st">'Bivariate plot for'</span>,
-        select_var_name_<span class="dv">1</span>,
-        <span class="st">'and'</span>,
-        select_var_name_<span class="dv">2</span>,
-        <span class="dt">sep =</span> <span class="st">' '</span>
-      )) <span class="op">+</span>
-<span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(
-        <span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),
-        <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>),
-        <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>)
-      )
-  }
-
-  <span class="kw">return</span>(bivarPlot)
-}
-
-<span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;rBivarPlots&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">heading =</span> <span class="st">&quot;Bivariate analysis&quot;</span>)
-
-<span class="kw">getRegistry</span>()</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">rBivarPlots &lt;-<span class="st"> </span><span class="cf">function</span>(dataset, select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>, <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor=</span> <span class="st">&quot;black&quot;</span>) {</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  numeric_cols &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">getDatatype</span>(dataset)[<span class="st">'numeric_cols'</span>])</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  cat_cols &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">getDatatype</span>(dataset)[<span class="st">'cat_cols'</span>])</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="cf">if</span> (select_var_name_<span class="dv">1</span> <span class="op">%in%</span><span class="st"> </span>numeric_cols <span class="op">&amp;&amp;</span><span class="st"> </span>select_var_name_<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span>numeric_cols) {</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">    x =<span class="st"> </span>dataset[, select_var_name_<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">    y =<span class="st"> </span>dataset[, select_var_name_<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">    bivarPlot &lt;-</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(x, y)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color =</span> priColor, <span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> lm, <span class="dt">color =</span> secColor) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(select_var_name_<span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(</a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">        <span class="st">'Bivariate plot for'</span>,</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">        select_var_name_<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">        <span class="st">'and'</span>,</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">        select_var_name_<span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">        <span class="dt">sep =</span> <span class="st">' '</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">      )) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">        <span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">        <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">        <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">      )</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">  } <span class="cf">else</span> <span class="cf">if</span> (select_var_name_<span class="dv">1</span> <span class="op">%in%</span><span class="st"> </span>cat_cols <span class="op">&amp;&amp;</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="st">             </span>select_var_name_<span class="dv">2</span> <span class="op">%in%</span><span class="st"> </span>cat_cols) {</a>
+<a class="sourceLine" id="cb5-32" data-line-number="32">    new_df &lt;-<span class="st"> </span>dataset <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">group_by_</span>(<span class="dt">.dots=</span><span class="kw">c</span>(select_var_name_<span class="dv">1</span>,select_var_name_<span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">summarise</span>(<span class="dt">n =</span> dplyr<span class="op">::</span><span class="kw">n</span>())</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">    colfunc &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(priColor, <span class="st">&quot;white&quot;</span> , secColor))</a>
+<a class="sourceLine" id="cb5-34" data-line-number="34">    colorvar &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(new_df[[select_var_name_<span class="dv">2</span>]]))</a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">    a=<span class="kw">as.vector</span>(<span class="kw">as.character</span>(<span class="kw">unique</span>(new_df[[select_var_name_<span class="dv">1</span>]])))</a>
+<a class="sourceLine" id="cb5-36" data-line-number="36">    y=new_df[[select_var_name_<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb5-37" data-line-number="37">    label=new_df[[select_var_name_<span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb5-38" data-line-number="38">    bivarPlot &lt;-ggplot2<span class="op">::</span><span class="kw">ggplot</span>(new_df, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> y, <span class="dt">y=</span> n, <span class="dt">fill =</span> label)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>, <span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>,<span class="dt">alpha=</span><span class="fl">0.9</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">guides</span>(<span class="dt">fill=</span>ggplot2<span class="op">::</span><span class="kw">guide_legend</span>(<span class="dt">title=</span>select_var_name_<span class="dv">2</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(select_var_name_<span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(<span class="st">&quot;count&quot;</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">'Bivariate plot for'</span>,select_var_name_<span class="dv">1</span>,<span class="st">'and'</span>,select_var_name_<span class="dv">2</span>,<span class="dt">sep=</span><span class="st">' '</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),<span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb5-46" data-line-number="46">                     <span class="dt">axis.title=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),<span class="dt">legend.position=</span><span class="st">&quot;bottom&quot;</span>,<span class="dt">axis.text.x=</span>ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">angle=</span><span class="dv">45</span>, <span class="dt">hjust=</span><span class="dv">1</span>))<span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">colfunc</span>(colorvar))</a>
+<a class="sourceLine" id="cb5-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb5-48" data-line-number="48"></a>
+<a class="sourceLine" id="cb5-49" data-line-number="49">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb5-50" data-line-number="50">    cols &lt;-<span class="st"> </span><span class="kw">c</span>(select_var_name_<span class="dv">1</span>, select_var_name_<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb5-51" data-line-number="51">    cat_col &lt;-<span class="st"> </span>cols[<span class="kw">which</span>(cols <span class="op">%in%</span><span class="st"> </span>cat_cols)]</a>
+<a class="sourceLine" id="cb5-52" data-line-number="52">    num_col &lt;-<span class="st"> </span>cols[<span class="kw">which</span>(cols <span class="op">%in%</span><span class="st"> </span>numeric_cols)]</a>
+<a class="sourceLine" id="cb5-53" data-line-number="53">    a =<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">as.character</span>(<span class="kw">unique</span>(dataset[[cat_col]])))</a>
+<a class="sourceLine" id="cb5-54" data-line-number="54">    y =<span class="st"> </span>dataset[[cat_col]]</a>
+<a class="sourceLine" id="cb5-55" data-line-number="55">    x =<span class="st"> </span>dataset[[num_col]]</a>
+<a class="sourceLine" id="cb5-56" data-line-number="56">    bivarPlot &lt;-</a>
+<a class="sourceLine" id="cb5-57" data-line-number="57"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(dataset, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> y, <span class="dt">y =</span> x)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-58" data-line-number="58"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">geom_point</span>(<span class="dt">color =</span> priColor, <span class="dt">alpha =</span> <span class="fl">0.7</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-59" data-line-number="59"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-60" data-line-number="60"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">xlab</span>(cat_col) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-61" data-line-number="61"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ylab</span>(num_col) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-62" data-line-number="62"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(</a>
+<a class="sourceLine" id="cb5-63" data-line-number="63">        <span class="st">'Bivariate plot for'</span>,</a>
+<a class="sourceLine" id="cb5-64" data-line-number="64">        select_var_name_<span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb5-65" data-line-number="65">        <span class="st">'and'</span>,</a>
+<a class="sourceLine" id="cb5-66" data-line-number="66">        select_var_name_<span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb5-67" data-line-number="67">        <span class="dt">sep =</span> <span class="st">' '</span></a>
+<a class="sourceLine" id="cb5-68" data-line-number="68">      )) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-69" data-line-number="69"><span class="st">      </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(</a>
+<a class="sourceLine" id="cb5-70" data-line-number="70">        <span class="dt">plot.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb5-71" data-line-number="71">        <span class="dt">axis.text =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb5-72" data-line-number="72">        <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb5-73" data-line-number="73">      )</a>
+<a class="sourceLine" id="cb5-74" data-line-number="74">  }</a>
+<a class="sourceLine" id="cb5-75" data-line-number="75"></a>
+<a class="sourceLine" id="cb5-76" data-line-number="76">  <span class="kw">return</span>(bivarPlot)</a>
+<a class="sourceLine" id="cb5-77" data-line-number="77">}</a>
+<a class="sourceLine" id="cb5-78" data-line-number="78"></a>
+<a class="sourceLine" id="cb5-79" data-line-number="79"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;rBivarPlots&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">heading =</span> <span class="st">&quot;Bivariate analysis&quot;</span>)</a>
+<a class="sourceLine" id="cb5-80" data-line-number="80"></a>
+<a class="sourceLine" id="cb5-81" data-line-number="81"><span class="kw">getRegistry</span>()</a></code></pre></div>
 </div>
 <div id="registering-python-functions" class="section level2">
 <h2>Registering Python functions</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">registerFunction</span>(<span class="st">&quot;decisionTreeTrainAndTest&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;python&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;numpy.ndarray&quot;</span>)
-<span class="kw">getRegistry</span>()</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">registerFunction</span>(<span class="st">&quot;decisionTreeTrainAndTest&quot;</span>, <span class="dt">engine =</span> <span class="st">&quot;python&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;numpy.ndarray&quot;</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">getRegistry</span>()</a></code></pre></div>
 </div>
 <div id="interoperable-pipeline-containing-r-spark-and-python-functions" class="section level2">
 <h2>Interoperable pipeline containing R, Spark and Python functions</h2>
@@ -252,37 +483,37 @@ filterData &lt;-<span class="st"> </span><span class="cf">function</span>(inputD
 <li>Here we consider a typical use case of performing data filtering/ aggregations and so on and Spark, and then using R to visualize, and Python to run a Machine learning model</li>
 </ul>
 <p>We first visualize the data without filtering:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, 
-                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>vizWithoutFilterPipeline
-vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline
-vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>assessEngineSetUp
-vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWithoutFilter
-opWithoutFilter <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, </a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>vizWithoutFilterPipeline</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>getPipeline</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>assessEngineSetUp</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">vizWithoutFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWithoutFilter</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">opWithoutFilter <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">1</span>)</a></code></pre></div>
 <p>We then perform filtering on one of the variables in Spark, before visualizing in R</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Species == 'setosa'&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, 
-                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>singleFilterPipeline
-singleFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline
-
-singleFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWithFilter
-opWithFilter <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Species == 'setosa'&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, </a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>singleFilterPipeline</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">singleFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">singleFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWithFilter</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">opWithFilter <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">2</span>)</a></code></pre></div>
 <p>Finally, we show a case, where sequential filtering steps are performed in Spark, before visualizing in R, and running a decision tree model in Python.</p>
 <p>Note, that in this case, <code>getTargetForPyClassifcation</code> and <code>getTargetForPyClassification</code> have been registered as <em>data</em> functions. Type conversions between R, Spark and Python for data functions are performed automatically by the package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Species == 'setosa' or Species == 'virginica'&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Petal_Length &gt; 3.7&quot;</span>, <span class="dt">outAsIn =</span> T) <span class="op">%&gt;&gt;%</span>
-<span class="st">  </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, 
-                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) <span class="op">%&gt;&gt;%</span>
-<span class="st">  </span><span class="kw">getFeaturesForPyClassification</span>(<span class="dt">dataset =</span> <span class="op">~</span>f2, <span class="dt">featureNames =</span> <span class="kw">c</span>(<span class="st">&quot;Sepal_Length&quot;</span>,
-                                                                 <span class="st">&quot;Sepal_Width&quot;</span>,
-                                                                 <span class="st">&quot;Petal_Length&quot;</span>)) <span class="op">%&gt;&gt;%</span><span class="st"> </span>
-<span class="st">          </span><span class="kw">getTargetForPyClassification</span>(<span class="dt">dataset =</span> <span class="op">~</span>f2, <span class="dt">targetVarName =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">positiveClass =</span> <span class="st">&quot;setosa&quot;</span>) <span class="op">%&gt;&gt;%</span>
-<span class="st">          </span><span class="kw">decisionTreeTrainAndTest_py</span>(<span class="dt">data =</span> <span class="op">~</span>f4, <span class="dt">target =</span> <span class="op">~</span>f5, <span class="dt">newData =</span> <span class="op">~</span>f4, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>twoFilterPipeline
-
-twoFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline
-
-twoFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWith2Filters
-opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">3</span>)
-opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">6</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">pipelineObj <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Species == 'setosa' or Species == 'virginica'&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">filterData_spark</span>(<span class="dt">condition =</span> <span class="st">&quot;Petal_Length &gt; 3.7&quot;</span>, <span class="dt">outAsIn =</span> T) <span class="op">%&gt;&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">rBivarPlots</span>(<span class="dt">select_var_name_1 =</span> <span class="st">&quot;Sepal_Length&quot;</span>, <span class="dt">select_var_name_2 =</span>  <span class="st">&quot;Sepal_Width&quot;</span>, </a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">                     <span class="dt">priColor =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">secColor =</span> <span class="st">&quot;green&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) <span class="op">%&gt;&gt;%</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw">getFeaturesForPyClassification</span>(<span class="dt">dataset =</span> <span class="op">~</span>f2, <span class="dt">featureNames =</span> <span class="kw">c</span>(<span class="st">&quot;Sepal_Length&quot;</span>,</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">                                                                 <span class="st">&quot;Sepal_Width&quot;</span>,</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">                                                                 <span class="st">&quot;Petal_Length&quot;</span>)) <span class="op">%&gt;&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="st">          </span><span class="kw">getTargetForPyClassification</span>(<span class="dt">dataset =</span> <span class="op">~</span>f2, <span class="dt">targetVarName =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">positiveClass =</span> <span class="st">&quot;setosa&quot;</span>) <span class="op">%&gt;&gt;%</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">          </span><span class="kw">decisionTreeTrainAndTest_py</span>(<span class="dt">data =</span> <span class="op">~</span>f4, <span class="dt">target =</span> <span class="op">~</span>f5, <span class="dt">newData =</span> <span class="op">~</span>f4, <span class="dt">storeOutput =</span> T) -&gt;<span class="st"> </span>twoFilterPipeline</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">twoFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>visualizePipeline</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">twoFilterPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>opWith2Filters</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="dv">6</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="supplementary-note" class="section level1">
@@ -290,6 +521,9 @@ opWith2Filters <span class="op">%&gt;&gt;%</span><span class="st"> </span><span 
 <p>The <em>analysisPipelines</em> package internally uses the <em>SparkR</em> package to interface with <em>Spark</em>. <em>SparkR</em> masks many typical data manipulation and processing functions from <em>base</em> as well as packages like <em>dplyr</em>. Therefore, ensure you use function scoping when calling a function.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
