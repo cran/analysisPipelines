@@ -8,6 +8,7 @@
 
 #' @importFrom pipeR %>>%
 #' @importFrom rlang .data
+#' @importFrom rlang !!
 #' @importFrom graphics image
 #' @importFrom methods getClass new removeMethod setClassUnion setGeneric setOldClass
 #' @importFrom stats as.formula lm reorder terms
@@ -1076,10 +1077,15 @@ computeEdges <- function(pipelineRegistryJoin){
         }, id = id)
 
         edges <- dplyr::bind_rows(edges)
+      }else{
+        edges = dplyr::tibble(from = character(),
+                              to = character())
       }
 
       return(edges)
-    }) %>>% dplyr::bind_rows(.data) -> edgesDf
+    }) -> edgesList
+
+      dplyr::bind_rows(edgesList) -> edgesDf
 
     if(nrow(edgesDf) == 0 && ncol(edgesDf) == 0){
       edgesDf <- dplyr::tibble(from = character(),

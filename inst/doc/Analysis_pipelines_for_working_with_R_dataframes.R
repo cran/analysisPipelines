@@ -1,5 +1,6 @@
 ## ----sourcing, message=F, results='hide'---------------------------------
 library(analysisPipelines)
+knitr::opts_chunk$set(warning = FALSE)
 
 ## ----creating object, warning=F------------------------------------------
 obj <- AnalysisPipeline(input = iris)
@@ -92,7 +93,7 @@ registerFunction(functionName = "getColumnName", isDataFunction = F, firstArgCla
 
 getRegistry()
 
-## ------------------------------------------------------------------------
+## ----warning=F-----------------------------------------------------------
 obj %>>% getColor(color = "blue") %>>% getColumnName(columnName = "Petal.Length") %>>%
       univarCatDistPlots(uniCol = "Species", priColor = ~f1, optionalPlots = 0, storeOutput = T) %>>%
       outlierPlot(method = "iqr", columnName = ~f2, cutoffValue = 0.01, priColor = ~f1 , optionalPlots = 0) -> complexPipeline
@@ -101,7 +102,7 @@ complexPipeline %>>% getPipeline
 complexPipeline %>>% generateOutput -> op
 op %>>% getOutputById("3")
 
-## ------------------------------------------------------------------------
+## ----warning=F-----------------------------------------------------------
 exampleObj <- AnalysisPipeline(input = iris)
 
 filterData <- function(dataset, conditionVar, val){

@@ -1,9 +1,9 @@
 Package: analysisPipelines
 Type: Package
-Date: 2020-05-05
+Date: 2020-06-12
 Title: Compose Interoperable Analysis Pipelines & Put Them in
         Production
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(
       person("Naren","Srinivasan", email = "naren1991@gmail.com", role = c("aut")),
       person("Zubin Dowlaty","",  email = "Zubin.Dowlaty@mu-sigma.com", role = c("aut")),
@@ -38,7 +38,7 @@ Collate: 'analysisPipelines_package.R' 'core-functions.R'
         'r-helper-utilites-python.R'
         'spark-structured-streaming-utilities.R' 'zzz.R'
 NeedsCompilation: no
-Packaged: 2020-05-05 14:07:23 UTC; naren
+Packaged: 2020-06-12 07:38:11 UTC; naren
 Author: Naren Srinivasan [aut],
   Zubin Dowlaty [aut],
   Sanjay [ctb],
@@ -47,4 +47,4 @@ Author: Naren Srinivasan [aut],
   Mu Sigma, Inc. [cre]
 Maintainer: "Mu Sigma, Inc." <ird.experiencelab@mu-sigma.com>
 Repository: CRAN
-Date/Publication: 2020-05-05 14:40:07 UTC
+Date/Publication: 2020-06-12 08:00:02 UTC

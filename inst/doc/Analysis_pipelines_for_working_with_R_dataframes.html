@@ -396,7 +396,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h1>Usage</h1>
 <div id="loading-the-package" class="section level2">
 <h2>Loading the package</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(analysisPipelines)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(analysisPipelines)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">warning =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
 <div id="creating-an-analysispipeline-object" class="section level2">
 <h2>Creating an analysisPipeline object</h2>
@@ -476,17 +477,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <pre><code>## [1] 0</code></pre>
 <p>The pipeline can be executed by explicitly calling the <code>generateOutput</code> method and assigning it to a variable.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">obj1Output &lt;-<span class="st"> </span>obj1 <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:17] ||  Engine Assessment for pipeline STARTED  ||
-## INFO [2020-05-05 19:37:18] ||  Engine Assessment COMPLETE. Time taken : 1.21318531036377 seconds||
-## INFO [2020-05-05 19:37:18] ||  Pipeline Prep. STARTED  ||
-## INFO [2020-05-05 19:37:18] ||  Pipeline Prep. COMPLETE. Time taken : 0.051128625869751 seconds||
-## INFO [2020-05-05 19:37:18] ||  Pipeline Execution STARTED  ||
-## INFO [2020-05-05 19:37:18] ||  Executing Batch Number : 1/1 containing functions 'univarCatDistPlots' ||
-## INFO [2020-05-05 19:37:18] ||  Function ID '1' named 'univarCatDistPlots' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:18] ||  Function ID '1' named 'univarCatDistPlots' COMPLETED. Time taken : 0.111201524734497 seconds  ||
-## INFO [2020-05-05 19:37:18] ||  Batch Number 1/1 COMPLETE. Time taken : 0.118855237960815 seconds  ||
-## INFO [2020-05-05 19:37:18] ||  Performing final garbage cleaning and collection of outputs  ||
-## INFO [2020-05-05 19:37:18] ||  Pipeline Execution COMPLETE. Time taken : 0.132173299789429 seconds||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:04] ||  Engine Assessment for pipeline STARTED  ||
+## INFO [2020-06-12 13:08:06] ||  Engine Assessment COMPLETE. Time taken : 1.27664971351624 seconds||
+## INFO [2020-06-12 13:08:06] ||  Pipeline Prep. STARTED  ||
+## INFO [2020-06-12 13:08:06] ||  Pipeline Prep. COMPLETE. Time taken : 0.0949983596801758 seconds||
+## INFO [2020-06-12 13:08:06] ||  Pipeline Execution STARTED  ||
+## INFO [2020-06-12 13:08:06] ||  Executing Batch Number : 1/1 containing functions 'univarCatDistPlots' ||
+## INFO [2020-06-12 13:08:06] ||  Function ID '1' named 'univarCatDistPlots' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:06] ||  Function ID '1' named 'univarCatDistPlots' COMPLETED. Time taken : 0.100099802017212 seconds  ||
+## INFO [2020-06-12 13:08:06] ||  Batch Number 1/1 COMPLETE. Time taken : 0.111313819885254 seconds  ||
+## INFO [2020-06-12 13:08:06] ||  Performing final garbage cleaning and collection of outputs  ||
+## INFO [2020-06-12 13:08:06] ||  Pipeline Execution COMPLETE. Time taken : 0.156698942184448 seconds||</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">length</span>(obj1Output<span class="op">@</span>output)</a></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>Observe that the length of the output list of the first object (the chunk above) remains 0 since the generated output was assigned to a new object.</p>
@@ -537,7 +538,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb23-17" data-line-number="17">}</a>
 <a class="sourceLine" id="cb23-18" data-line-number="18"></a>
 <a class="sourceLine" id="cb23-19" data-line-number="19"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;bivariatePlots&quot;</span>, <span class="dt">heading =</span> <span class="st">&quot;Bivariate Analysis&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:19] ||  Function 'bivariatePlots' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:06] ||  Function 'bivariatePlots' was registered successfully  ||</code></pre>
 </div>
 <div id="adding-the-newly-registered-function-to-a-pipeline" class="section level2">
 <h2>Adding the newly registered function to a pipeline</h2>
@@ -557,21 +558,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 3 3     bivariatePlo… Bivariate Analysis   &lt;named list… FALSE   FALSE</code></pre>
 <p>The newly added function will also lazy evaluate depending on the trigger.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">obj2Output &lt;-<span class="st"> </span>obj2 <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">generateOutput</span>()</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:19] ||  Engine Assessment for pipeline STARTED  ||
-## INFO [2020-05-05 19:37:19] ||  Engine Assessment COMPLETE. Time taken : 0.013723611831665 seconds||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Prep. STARTED  ||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Prep. COMPLETE. Time taken : 0.020606517791748 seconds||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Execution STARTED  ||
-## INFO [2020-05-05 19:37:19] ||  Executing Batch Number : 1/1 containing functions 'univarCatDistPlots, outlierPlot, bivariatePlots' ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '1' named 'univarCatDistPlots' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '1' named 'univarCatDistPlots' COMPLETED. Time taken : 0.148232698440552 seconds  ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '2' named 'outlierPlot' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '2' named 'outlierPlot' COMPLETED. Time taken : 0.0126850605010986 seconds  ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '3' named 'bivariatePlots' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '3' named 'bivariatePlots' COMPLETED. Time taken : 0.024303674697876 seconds  ||
-## INFO [2020-05-05 19:37:19] ||  Batch Number 1/1 COMPLETE. Time taken : 0.20019268989563 seconds  ||
-## INFO [2020-05-05 19:37:19] ||  Performing final garbage cleaning and collection of outputs  ||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Execution COMPLETE. Time taken : 0.213663816452026 seconds||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:07] ||  Engine Assessment for pipeline STARTED  ||
+## INFO [2020-06-12 13:08:07] ||  Engine Assessment COMPLETE. Time taken : 0.0155150890350342 seconds||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Prep. STARTED  ||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Prep. COMPLETE. Time taken : 0.0775268077850342 seconds||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Execution STARTED  ||
+## INFO [2020-06-12 13:08:07] ||  Executing Batch Number : 1/1 containing functions 'univarCatDistPlots, outlierPlot, bivariatePlots' ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '1' named 'univarCatDistPlots' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '1' named 'univarCatDistPlots' COMPLETED. Time taken : 0.0842931270599365 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '2' named 'outlierPlot' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '2' named 'outlierPlot' COMPLETED. Time taken : 0.0162217617034912 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '3' named 'bivariatePlots' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '3' named 'bivariatePlots' COMPLETED. Time taken : 0.0264449119567871 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Batch Number 1/1 COMPLETE. Time taken : 0.148617029190063 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Performing final garbage cleaning and collection of outputs  ||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Execution COMPLETE. Time taken : 0.243533134460449 seconds||</code></pre>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">obj2Output <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="st">&quot;1&quot;</span>)</a></code></pre></div>
 <pre><code>## $call
 ## # A tibble: 1 x 7
@@ -605,9 +606,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb33-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb33-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb33-9" data-line-number="9"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getColor&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;character&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:19] ||  Function 'getColor' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:07] ||  Function 'getColor' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">&quot;getColumnName&quot;</span>, <span class="dt">isDataFunction =</span> F, <span class="dt">firstArgClass =</span> <span class="st">&quot;character&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:19] ||  Function 'getColumnName' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:07] ||  Function 'getColumnName' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">getRegistry</span>()</a></code></pre></div>
 <pre><code>## # A tibble: 11 x 7
 ##    functionName heading engine exceptionHandli… userDefined isDataFunction
@@ -638,26 +639,26 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 3 3     univarCatDis… &quot;Univariate Distrib… &lt;named list… FALSE   TRUE       
 ## 4 4     outlierPlot   &quot;Univariate Outlier&quot; &lt;named list… FALSE   FALSE</code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">complexPipeline <span class="op">%&gt;&gt;%</span><span class="st"> </span>generateOutput -&gt;<span class="st"> </span>op</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:19] ||  Engine Assessment for pipeline STARTED  ||
-## INFO [2020-05-05 19:37:19] ||  Engine Assessment COMPLETE. Time taken : 0.0146172046661377 seconds||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Prep. STARTED  ||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Prep. COMPLETE. Time taken : 0.0111403465270996 seconds||
-## INFO [2020-05-05 19:37:19] ||  Pipeline Execution STARTED  ||
-## INFO [2020-05-05 19:37:19] ||  Executing Batch Number : 1/2 containing functions 'getColor, getColumnName' ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '1' named 'getColor' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '1' named 'getColor' COMPLETED. Time taken : 0.00528788566589355 seconds  ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '2' named 'getColumnName' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:19] ||  Function ID '2' named 'getColumnName' COMPLETED. Time taken : 0.00487279891967773 seconds  ||
-## INFO [2020-05-05 19:37:19] ||  Batch Number 1/2 COMPLETE. Time taken : 0.024263858795166 seconds  ||
-## INFO [2020-05-05 19:37:20] ||  Executing Batch Number : 2/2 containing functions 'univarCatDistPlots, outlierPlot' ||
-## INFO [2020-05-05 19:37:20] ||  Cleared intermediate outputs which are not required  ||
-## INFO [2020-05-05 19:37:20] ||  Function ID '3' named 'univarCatDistPlots' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:20] ||  Function ID '3' named 'univarCatDistPlots' COMPLETED. Time taken : 0.012582540512085 seconds  ||
-## INFO [2020-05-05 19:37:20] ||  Function ID '4' named 'outlierPlot' STARTED on the 'r' engine ||
-## INFO [2020-05-05 19:37:20] ||  Function ID '4' named 'outlierPlot' COMPLETED. Time taken : 0.0531919002532959 seconds  ||
-## INFO [2020-05-05 19:37:20] ||  Batch Number 2/2 COMPLETE. Time taken : 0.0810093879699707 seconds  ||
-## INFO [2020-05-05 19:37:20] ||  Performing final garbage cleaning and collection of outputs  ||
-## INFO [2020-05-05 19:37:20] ||  Pipeline Execution COMPLETE. Time taken : 0.130445241928101 seconds||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:07] ||  Engine Assessment for pipeline STARTED  ||
+## INFO [2020-06-12 13:08:07] ||  Engine Assessment COMPLETE. Time taken : 0.0144739151000977 seconds||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Prep. STARTED  ||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Prep. COMPLETE. Time taken : 0.0235037803649902 seconds||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Execution STARTED  ||
+## INFO [2020-06-12 13:08:07] ||  Executing Batch Number : 1/2 containing functions 'getColor, getColumnName' ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '1' named 'getColor' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '1' named 'getColor' COMPLETED. Time taken : 0.00516486167907715 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '2' named 'getColumnName' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '2' named 'getColumnName' COMPLETED. Time taken : 0.00536274909973145 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Batch Number 1/2 COMPLETE. Time taken : 0.028419017791748 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Executing Batch Number : 2/2 containing functions 'univarCatDistPlots, outlierPlot' ||
+## INFO [2020-06-12 13:08:07] ||  Cleared intermediate outputs which are not required  ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '3' named 'univarCatDistPlots' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '3' named 'univarCatDistPlots' COMPLETED. Time taken : 0.0118746757507324 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '4' named 'outlierPlot' STARTED on the 'r' engine ||
+## INFO [2020-06-12 13:08:07] ||  Function ID '4' named 'outlierPlot' COMPLETED. Time taken : 0.0555336475372314 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Batch Number 2/2 COMPLETE. Time taken : 0.086395263671875 seconds  ||
+## INFO [2020-06-12 13:08:07] ||  Performing final garbage cleaning and collection of outputs  ||
+## INFO [2020-06-12 13:08:07] ||  Pipeline Execution COMPLETE. Time taken : 0.144899129867554 seconds||</code></pre>
 <div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">op <span class="op">%&gt;&gt;%</span><span class="st"> </span><span class="kw">getOutputById</span>(<span class="st">&quot;3&quot;</span>)</a></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
@@ -692,13 +693,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb44-24" data-line-number="24">}</a>
 <a class="sourceLine" id="cb44-25" data-line-number="25"></a>
 <a class="sourceLine" id="cb44-26" data-line-number="26"><span class="kw">registerFunction</span>(<span class="st">&quot;filterData&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:20] ||  Function 'filterData' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:08] ||  Function 'filterData' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw">registerFunction</span>(<span class="st">&quot;summarizeData&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:20] ||  Function 'summarizeData' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:08] ||  Function 'summarizeData' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">registerFunction</span>(<span class="st">&quot;plotLine&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:20] ||  Function 'plotLine' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:08] ||  Function 'plotLine' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">registerFunction</span>(<span class="st">&quot;plotSummary&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:20] ||  Function 'plotSummary' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:08] ||  Function 'plotSummary' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">exampleObj <span class="op">%&gt;&gt;%</span><span class="st">  </span><span class="kw">summarizeData</span>(<span class="dt">conditionVar =</span> <span class="st">&quot;Species&quot;</span>) <span class="op">%&gt;&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb52-2" data-line-number="2"><span class="st">                </span><span class="kw">filterData</span>(<span class="dt">conditionVar =</span> <span class="st">&quot;Species&quot;</span>, <span class="dt">val =</span> <span class="st">&quot;setosa&quot;</span>, <span class="dt">outAsIn =</span> F, <span class="dt">storeOutput =</span> F) <span class="op">%&gt;&gt;%</span></a>
 <a class="sourceLine" id="cb52-3" data-line-number="3"><span class="st">                </span><span class="kw">plotLine</span>(<span class="dt">y =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">x =</span> <span class="st">&quot;Sepal.Width&quot;</span>, <span class="dt">outAsIn =</span> T, <span class="dt">storeOutput =</span> T) <span class="op">%&gt;&gt;%</span></a>
@@ -775,7 +776,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb59-7" data-line-number="7">}</a>
 <a class="sourceLine" id="cb59-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb59-9" data-line-number="9"><span class="kw">registerFunction</span>(<span class="dt">functionName =</span> <span class="st">'sampleFunction'</span>, <span class="st">&quot;Sample&quot;</span>, <span class="dt">exceptionFunction =</span> <span class="st">&quot;sampleException&quot;</span>)</a></code></pre></div>
-<pre><code>## INFO [2020-05-05 19:37:20] ||  Function 'sampleFunction' was registered successfully  ||</code></pre>
+<pre><code>## INFO [2020-06-12 13:08:08] ||  Function 'sampleFunction' was registered successfully  ||</code></pre>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">getRegistry</span>()</a></code></pre></div>
 <pre><code>## # A tibble: 16 x 7
 ##    functionName heading engine exceptionHandli… userDefined isDataFunction
